@@ -111,6 +111,29 @@ class Graph {
             console.log(`${vertex.name} -> ${distance}`)
         }
     }
+
+    dfs(s: Vertex, padres: Padre[]) {
+
+        padres.push({ vertex: s, padre: null })
+
+        for (const { to } of s.edges) {
+
+            if (!padres.some(({ vertex }) => vertex === to)) {
+
+                padres.push({ vertex: to, padre: s })
+                this.dfs(to, padres)
+            }
+        }
+
+        return padres
+    }
+
+    showDfs(padres: Padre[]) {
+
+        for (const { vertex, padre } of padres) {
+            console.log(`${vertex.name} -> ${padre?.name}`)
+        }
+    }
 }
 
 class Vertex {

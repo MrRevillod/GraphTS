@@ -1,7 +1,7 @@
 
 import { Graph, Vertex } from "./Graph"
 
-const main = () => {
+const bfs = () => {
 
     const G = new Graph()
 
@@ -34,12 +34,38 @@ const main = () => {
     G.addEdge(c, v, 0)
     G.addEdge(f, v, 0)
 
-    const padres = []
-    const niveles = []
-
-    const bfs = G.bfs(s, padres, niveles)
-
+    const bfs = G.bfs(s, [], [])
     G.showBfs(bfs)
 }
 
-main()
+const dfs = () => {
+
+    const G = new Graph()
+
+    const a = new Vertex('a')
+    const b = new Vertex('b')
+    const c = new Vertex('c')
+    const d = new Vertex('d')
+    const e = new Vertex('e')
+    const f = new Vertex('f')
+
+    G.addVertex(a)
+    G.addVertex(b)
+    G.addVertex(c)
+    G.addVertex(d)
+    G.addVertex(e)
+    G.addVertex(f)
+
+    G.addEdge(a, b, 0)
+    G.addEdge(a, d, 0)
+    G.addEdge(b, e, 0)
+    G.addEdge(d, b, 0)
+    G.addEdge(e, d, 0)
+    G.addEdge(c, e, 0)
+    G.addEdge(c, f, 0)
+
+    const dfs = G.dfs(a, [])
+    G.showDfs(dfs)
+}
+
+dfs()
