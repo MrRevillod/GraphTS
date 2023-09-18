@@ -43,7 +43,7 @@ const dfs = () => {
     const G = new Graph()
 
     const a = new Vertex('a')
-    const b = new Vertex('b')
+    const b = new Vertex('a')
     const c = new Vertex('c')
     const d = new Vertex('d')
     const e = new Vertex('e')
@@ -68,4 +68,19 @@ const dfs = () => {
     G.showDfs(dfs)
 }
 
-dfs()
+const main = () => {
+
+    const G = new Graph()
+    const a = new Vertex('a')
+    const b = new Vertex('b')
+    const c = new Vertex('c')
+
+    G.addVertex(c)
+    G.addVertex(b)
+
+    G.addEdge(b, c, 0)
+    G.removeVertex('b')
+    G.show()
+}
+
+main()

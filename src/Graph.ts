@@ -11,37 +11,39 @@ class Graph {
 
     show() {
 
+        console.log()
+
         for (const vertex of this.vertices) {
             for (const { to, weight } of vertex.edges) {
                 console.log(`${vertex.name} -> ${weight} -> ${to.name}`)
             }
         }
+
+        console.log()
     }
 
     addVertex(vertex: Vertex) {
 
-        if (this.vertices.includes(vertex)) {
-            throw { message: 'El vertice ya existe' }
+        if (this.vertices.find(v => v.name === vertex.name)) {
+            throw { message: 'El vértice ya existe' }
         }
 
         this.vertices.push(vertex)
     }
 
-    removeVertex(vertex: Vertex) {
+    removeVertex(name: string) {
 
-        if (!this.vertices.includes(vertex)) {
-            throw { message: "El vertice no existe en el grafo" }
+        const vertex = this.vertices.find(v => v.name === name)
+
+        if (!vertex) {
+            throw { message: 'El vértice no existe' }
         }
 
-        const hasEdges = this.vertices.some((v) =>
-            v.edges.some((edge) => edge.to === vertex)
-        )
+        this.vertices = this.vertices.filter(v => v !== vertex)
 
-        if (hasEdges) {
-            throw { message: "El vertice aún posee conexiones" }
+        for (const v of this.vertices) {
+            v.edges = v.edges.filter(edge => edge.to !== vertex)
         }
-
-        this.vertices.filter((v) => v !== vertex)
     }
 
     addEdge(from: Vertex, to: Vertex, weight: number) {
