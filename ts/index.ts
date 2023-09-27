@@ -69,18 +69,7 @@ const dfs = () => {
 }
 
 const main = () => {
-
-    const G = new Graph()
-    const a = new Vertex('a')
-    const b = new Vertex('b')
-    const c = new Vertex('c')
-
-    G.addVertex(c)
-    G.addVertex(b)
-
-    G.addEdge(b, c, 0)
-    G.removeVertex('b')
-    G.show()
+    bfs()
 }
 
 main()
