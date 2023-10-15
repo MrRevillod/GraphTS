@@ -35,9 +35,44 @@ void bfs() {
     g.add_edge(c, v, 0);
     g.add_edge(f, v, 0);
 
-    std::vector<nivel *> bfs_result = g.bfs(s);
-    g.show_bfs(bfs_result);
+    g.bfs(s);
 }
+
+void dfs() {
+
+    graph g;
+
+    vertex *a = new vertex("a");
+    vertex *b = new vertex("b");
+    vertex *c = new vertex("c");
+    vertex *d = new vertex("d");
+    vertex *e = new vertex("e");
+    vertex *f = new vertex("f");
+
+    g.add_vertex(a);
+    g.add_vertex(b);
+    g.add_vertex(c);
+    g.add_vertex(d);
+    g.add_vertex(e);
+    g.add_vertex(f);
+
+    g.add_edge(a, b, 0);
+    g.add_edge(a, d, 0);
+    g.add_edge(b, e, 0);
+    g.add_edge(d, b, 0);
+    g.add_edge(e, d, 0);
+    g.add_edge(c, e, 0);
+    g.add_edge(c, f, 0);
+
+    g.dfs(a);
+
+    g.show_visited();
+    g.show_dfs();
+}
+
+// Djikstra no trabaja con pesos negativos
+// relajar una arista:
+// d(v) > d(u) + w(u, v)
 
 int main() {
     bfs();
