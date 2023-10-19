@@ -70,11 +70,34 @@ void dfs() {
     g.show_dfs();
 }
 
-// Djikstra no trabaja con pesos negativos
-// relajar una arista:
-// d(v) > d(u) + w(u, v)
+void dijkstra() {
+
+    graph G;
+
+    vertex *A = new vertex("A");
+    vertex *B = new vertex("B");
+    vertex *C = new vertex("C");
+    vertex *D = new vertex("D");
+    vertex *E = new vertex("E");
+
+    G.add_vertex(A);
+    G.add_vertex(B);
+    G.add_vertex(C);
+    G.add_vertex(D);
+    G.add_vertex(E);
+
+    G.add_edge(A, B, 4);
+    G.add_edge(A, C, 2);
+    G.add_edge(B, C, 5);
+    G.add_edge(B, D, 10);
+    G.add_edge(C, D, 3);
+    G.add_edge(C, E, 2);
+    G.add_edge(E, D, 7);
+
+    G.dijkstra(E);
+}
 
 int main() {
-    bfs();
+    dfs();
     return 0;
 };

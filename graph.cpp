@@ -1,6 +1,8 @@
 
 #include <algorithm>
 #include <iostream>
+#include <limits>
+#include <queue>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -192,6 +194,45 @@ struct graph {
 
         for (const auto visit : visited) {
             std::cout << visit.first->name << " -> " << (visit.second == 1 ? "true" : "false") << std::endl;
+        }
+    }
+
+
+    void dijkstra(vertex *start) {
+
+        std::unordered_map<vertex *, int> distances;
+
+        for (vertex *v : vertices) {
+            distances[v] = std::numeric_limits<int>::max();
+        }
+
+        distances[start] = 0;
+
+        std::priority_queue<std::pair<int, vertex *>> pq;
+        pq.push({0, start});
+
+        while (!pq.empty()) {
+
+            vertex *u = pq.top().second;
+            pq.pop();
+
+            for (const auto edge : u->adj) {
+
+                vertex *v = edge.first;
+                int weight = edge.second;
+                int distance = distances[u] + weight;
+
+                if (distance < distances[v]) {
+                    distances[v] = distance;
+                    pq.push({-distance, v});
+                }
+            }
+        }
+
+        std::cout << "Distancias mínimas desde " << start->name << " a:" << std::endl;
+
+        for (vertex *v : vertices) {
+            std::cout << v->name << " -> " << (distances[v] == std::numeric_limits<int>::max() ? "∞" : std::to_string(distances[v])) << std::endl;
         }
     }
 };
