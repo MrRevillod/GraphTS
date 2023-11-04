@@ -1,11 +1,11 @@
 
-#include "graph.cpp"
+#include "dir_graph.hpp"
 #include <iostream>
 #include <string>
 
 void bfs() {
 
-    graph g;
+    directed_graph g;
     vertex *a = new vertex("a");
     vertex *z = new vertex("z");
     vertex *s = new vertex("s");
@@ -40,39 +40,35 @@ void bfs() {
 
 void dfs() {
 
-    graph g;
+    directed_graph g;
 
-    vertex *a = new vertex("a");
-    vertex *b = new vertex("b");
-    vertex *c = new vertex("c");
-    vertex *d = new vertex("d");
-    vertex *e = new vertex("e");
-    vertex *f = new vertex("f");
+    vertex *uno = new vertex("1");
+    vertex *dos = new vertex("2");
+    vertex *tres = new vertex("3");
+    vertex *cuatro = new vertex("4");
+    vertex *cinco = new vertex("5");
+    vertex *seis = new vertex("6");
 
-    g.add_vertex(a);
-    g.add_vertex(b);
-    g.add_vertex(c);
-    g.add_vertex(d);
-    g.add_vertex(e);
-    g.add_vertex(f);
+    g.add_vertex(uno);
+    g.add_vertex(dos);
+    g.add_vertex(tres);
+    g.add_vertex(cuatro);
+    g.add_vertex(cinco);
+    g.add_vertex(seis);
 
-    g.add_edge(a, b, 0);
-    g.add_edge(a, d, 0);
-    g.add_edge(b, e, 0);
-    g.add_edge(d, b, 0);
-    g.add_edge(e, d, 0);
-    g.add_edge(c, e, 0);
-    g.add_edge(c, f, 0);
+    g.add_edge(uno, dos, 0);
+    g.add_edge(uno, tres, 0);
+    g.add_edge(dos, cuatro, 0);
+    g.add_edge(cuatro, cinco, 0);
+    g.add_edge(cuatro, seis, 0);
 
-    g.dfs(a);
-
-    g.show_visited();
+    g.dfs(uno);
     g.show_dfs();
 }
 
 void dijkstra() {
 
-    graph G;
+    directed_graph g;
 
     vertex *A = new vertex("A");
     vertex *B = new vertex("B");
@@ -80,24 +76,22 @@ void dijkstra() {
     vertex *D = new vertex("D");
     vertex *E = new vertex("E");
 
-    G.add_vertex(A);
-    G.add_vertex(B);
-    G.add_vertex(C);
-    G.add_vertex(D);
-    G.add_vertex(E);
+    g.add_vertex(A);
+    g.add_vertex(B);
+    g.add_vertex(C);
+    g.add_vertex(D);
+    g.add_vertex(E);
 
-    G.add_edge(A, B, 4);
-    G.add_edge(A, C, 2);
-    G.add_edge(B, C, 5);
-    G.add_edge(B, D, 10);
-    G.add_edge(C, D, 3);
-    G.add_edge(C, E, 2);
-    G.add_edge(E, D, 7);
+    g.add_edge(A, B, 1);
+    g.add_edge(B, C, 3);
+    g.add_edge(A, D, 4);
+    g.add_edge(D, E, 2);
+    g.add_edge(E, C, 1);
 
-    G.dijkstra(E);
+    g.dijkstra(A);
 }
 
 int main() {
-    dfs();
+    dijkstra();
     return 0;
-};
+}
