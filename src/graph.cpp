@@ -103,9 +103,44 @@ void graph::dijkstra(vertex *start) {
         }
     }
 
-    std::cout << "Distancias mínimas desde " << start->name << " a:" << std::endl;
+    std::cout << " " << std::endl;
+    std::cout << "Distancias mínimas desde el vertice " << start->name << " a:" << std::endl;
 
     for (vertex *v : vertices) {
         std::cout << v->name << " -> " << (distances[v] == oo ? "∞" : std::to_string(distances[v])) << std::endl;
     }
+}
+
+void graph::topological_sort() {
+
+    for (vertex *v : vertices) {
+        visited[v] = false;
+    }
+
+    for (vertex *v : vertices) {
+        if (!visited[v]) {
+            topological_sort_recursive(v);
+        }
+    }
+
+    std::cout << " " << std::endl;
+    std::cout << "Orden topológico:" << std::endl;
+
+    while (!topological_stack.empty()) {
+        std::cout << topological_stack.top()->name << " ";
+        topological_stack.pop();
+    }
+}
+
+void graph::topological_sort_recursive(vertex *v) {
+
+    visited[v] = true;
+
+    for (const auto edge : v->adj) {
+        if (!visited[edge.first]) {
+            topological_sort_recursive(edge.first);
+        }
+    }
+
+    topological_stack.push(v);
 }

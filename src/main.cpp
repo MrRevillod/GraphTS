@@ -41,7 +41,6 @@ void bfs() {
 void dfs() {
 
     directed_graph g;
-
     vertex *uno = new vertex("1");
     vertex *dos = new vertex("2");
     vertex *tres = new vertex("3");
@@ -69,7 +68,6 @@ void dfs() {
 void dijkstra() {
 
     directed_graph g;
-
     vertex *A = new vertex("A");
     vertex *B = new vertex("B");
     vertex *C = new vertex("C");
@@ -89,6 +87,7 @@ void dijkstra() {
     g.add_edge(E, C, 1);
 
     g.dijkstra(A);
+    g.topological_sort();
 }
 
 int main() {

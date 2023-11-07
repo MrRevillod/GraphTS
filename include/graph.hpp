@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <stack>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -28,6 +29,7 @@ struct graph {
     std::unordered_map<vertex *, int> niveles;
     std::unordered_map<vertex *, bool> visited;
     std::unordered_map<vertex *, vertex *> parents;
+    std::stack<vertex *> topological_stack;
 
     ~graph() {
 
@@ -65,6 +67,9 @@ struct graph {
     void bfs(vertex *start);
     void dfs(vertex *s);
     void dijkstra(vertex *start);
+    void topological_sort();
+    void topological_sort_recursive(vertex *v);
+
     void bellman_ford(vertex *start);
     void floyd_warshall();
 

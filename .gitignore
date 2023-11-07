@@ -1,5 +1,4 @@
-graph
-obj/
-./obj/*
+README.pdf
 ./graph
-.vscode/
+obj/
+obj/*
