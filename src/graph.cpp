@@ -130,6 +130,7 @@ void graph::topological_sort() {
         std::cout << topological_stack.top()->name << " ";
         topological_stack.pop();
     }
+    std::cout << std::endl;
 }
 
 void graph::topological_sort_recursive(vertex *v) {
