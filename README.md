@@ -40,6 +40,22 @@ Un grafo es un conjunto de vertices y aritas que los conectan entre si.
 
 ## Algoritmos
 
+### Coloreo de grafos
+
+* **Complejidad**: NP-Completo
+* **Objetivo**: Asignar un color a cada vertice de un grafo de tal manera que dos vertices adyacentes no tengan el mismo color.
+
+* **Número cromático**: Es el menor número de colores que se necesitan para colorear un grafo.
+
+- **Aplicación**: Coloreo de un mapa de tal manera que dos paises adyacentes no tengan el mismo color.
+
+### Emparejamiento de grafos
+
+* **Complejidad**: O(V*E)
+* **Objetivo**: Encontrar el mayor numero de aristas que no se intersecten entre si.
+
+- **Aplicación**: Encontrar el mayor numero de parejas de personas que se gusten entre si.
+
 ### Breadth First Search (BFS)
 
 * **Complejidad**: O(V+E)
@@ -95,6 +111,8 @@ Un grafo es un conjunto de vertices y aritas que los conectan entre si.
 
 * Al ser un recorrido en profundidad se visita un vertice y así sucesivamente hasta que no se pueda seguir avanzando, luego se retrocede al vertice anterior y se continua con el siguiente vertice si lo hay.
 
+- **Aplicación cotidiana**: Encontrar la salida de un laberinto.
+
 * **Ejemplo**:
 
 ```cpp
@@ -119,6 +137,11 @@ Un grafo es un conjunto de vertices y aritas que los conectan entre si.
 
 * **Requisitos**:
     - El grafo debe ser dirigido y aciclico.
+
+* **Aplicaciones**:
+    - Ordenar tareas dependientes entre si.
+    - Ordenar tareas de compilacion.
+    - Ordenar tareas de un proyecto.
 
 * **Ejemplo**:
 
@@ -187,26 +210,26 @@ Un grafo es un conjunto de vertices y aritas que los conectan entre si.
 
 ### Bellman Ford
 
+* **Complejidad**: O(V*E)
+
 * **Objetivo**: Encontrar camino más corto a un vertice a otro o todos los vertices del grafo
 
 * En este caso pueden existir aristas con peso/ponderación negativa
 * No puede existir un ciclo de aristas negativas
 
-* **Complejidad**: O(V*E)
-
 
 ### Floyd Warshall
-
-* **Objetivo**: Encontrar el camino mas corto entre todos los pares de vertices aunque no estén conectados
-
-* **Requisitos**:
-    - No debe haber aristas con peso negativo
-    - Implementacion con matrices de adyacencia
-    - Número de vertices <= 500
-
-* **Problemas comunes**:
-    - Encontrar el camino optimo para un trazado de lineas de comunicacion.
 
 * **Complejidad**: 
     - Algoritmica: O(V^3) (Por los 3 ciclos anidados)
     - Espacial: O(V^2) (Por la matriz de adyacencia)
+
+* **Objetivo**: Encontrar el camino mas corto entre todos los pares de vertices aunque no estén conectados
+
+* **Requisitos**:
+    - Sin ciclos de peso negativo
+    - Implementacion con matrices de adyacencia
+    - Número de vertices <= 500
+
+* **Problemas comunes/cotidianos**:
+    - Encontrar el camino más corto entre todas las ciudades de una región.

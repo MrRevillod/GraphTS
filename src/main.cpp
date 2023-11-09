@@ -92,6 +92,6 @@ void dijkstra() {
 }
 
 int main() {
-
+    dijkstra();
     return 0;
 }
