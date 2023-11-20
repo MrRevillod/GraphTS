@@ -93,6 +93,6 @@ void dijkstra() {
 }
 
 int main() {
-    dfs();
+    dijkstra();
     return 0;
 }

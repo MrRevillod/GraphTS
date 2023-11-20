@@ -84,6 +84,7 @@ void graph::dijkstra(vertex *start) {
     }
 
     distances[start] = 0;
+    parents[start] = {start};
 
     std::priority_queue<std::pair<vertex *, int>> pq;
     pq.push({start, 0});
