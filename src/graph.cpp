@@ -10,6 +10,7 @@
 void graph::bfs(vertex *start) {
 
     std::vector<vertex *> frontera;
+
     frontera.push_back(start);
     niveles[start] = 0;
 
@@ -64,6 +65,7 @@ void graph::show_dfs() {
 
     std::cout << " " << std::endl;
     std::cout << "Padres " << std::endl;
+    std::cout << " " << std::endl;
 
     for (const auto parent : parents) {
         std::cout << parent.first->name << " -> " << parent.second->name << std::endl;
@@ -75,6 +77,7 @@ void graph::show_dfs() {
 void graph::dijkstra(vertex *start) {
 
     std::unordered_map<vertex *, int> distances;
+    std::unordered_map<vertex *, std::vector<vertex *>> parents;
 
     for (vertex *v : vertices) {
         distances[v] = oo;
@@ -98,16 +101,28 @@ void graph::dijkstra(vertex *start) {
 
             if (distance < distances[v]) {
                 distances[v] = distance;
+                parents[v] = parents[u];
+                parents[v].push_back(v);
                 pq.push({v, -distance});
             }
         }
     }
 
     std::cout << " " << std::endl;
-    std::cout << "Distancias mínimas desde el vertice " << start->name << " a:" << std::endl;
+    std::cout << "Distancias mínimas desde el vertice " << start->name << " a:";
 
     for (vertex *v : vertices) {
-        std::cout << v->name << " -> " << (distances[v] == oo ? "∞" : std::to_string(distances[v])) << std::endl;
+        std::cout << "" << std::endl;
+
+        if (distances[v] != oo && v != start) {
+            std::cout << "Vertice " << v->name << " - Camino: [ ";
+
+            for (vertex *p : parents[v]) {
+                std::cout << p->name << " ";
+            }
+
+            std::cout << "] - Costo: " << (distances[v] == oo ? "∞" : std::to_string(distances[v])) << std::endl;
+        }
     }
 }
 
@@ -124,7 +139,7 @@ void graph::topological_sort() {
     }
 
     std::cout << " " << std::endl;
-    std::cout << "Orden topológico:" << std::endl;
+    std::cout << "Orden topológico: ";
 
     while (!topological_stack.empty()) {
         std::cout << topological_stack.top()->name << " ";

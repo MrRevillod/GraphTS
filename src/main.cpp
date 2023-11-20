@@ -37,6 +37,7 @@ void bfs() {
     g.add_edge(f, v, 0);
 
     g.bfs(s);
+    g.show_bfs();
 }
 
 void dfs() {
@@ -92,6 +93,6 @@ void dijkstra() {
 }
 
 int main() {
-    dijkstra();
+    dfs();
     return 0;
 }
