@@ -2,12 +2,18 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
+#include "colormod.hpp"
 #include <algorithm>
 #include <iostream>
 #include <stack>
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+extern Color::Modifier red;
+extern Color::Modifier green;
+extern Color::Modifier blue;
+extern Color::Modifier def;
 
 #define oo 0x3f3f3f3f
 
@@ -25,17 +31,24 @@ struct vertex {
 
 struct graph {
 
+    std::string name;
     std::vector<vertex *> vertices;
-    std::unordered_map<vertex *, int> niveles;
+    std::stack<vertex *> topological_stack;
     std::unordered_map<vertex *, bool> visited;
     std::unordered_map<vertex *, vertex *> parents;
-    std::stack<vertex *> topological_stack;
+
+    graph(const std::string &n) : name(n) {}
 
     ~graph() {
 
         for (vertex *v : vertices) {
             delete (v);
         }
+    }
+
+    void show_name() {
+        std::cout << " " << std::endl;
+        std::cout << blue << name << def << std::endl;
     }
 
     bool v_exist(vertex *v) {
@@ -70,10 +83,6 @@ struct graph {
     void topological_sort();
     void topological_sort_recursive(vertex *v);
 
-    void bellman_ford(vertex *start);
-    void floyd_warshall();
-
-    void show_bfs();
     void show_dfs();
 };
 

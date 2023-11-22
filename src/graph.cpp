@@ -7,45 +7,63 @@
 #include <stdexcept>
 #include <string>
 
+Color::Modifier red(Color::FG_RED);
+Color::Modifier green(Color::FG_GREEN);
+Color::Modifier blue(Color::FG_BLUE);
+Color::Modifier def(Color::FG_DEFAULT);
+
 void graph::bfs(vertex *start) {
 
-    std::vector<vertex *> frontera;
+    std::vector<vertex *> frontier;
+    std::unordered_map<vertex *, bool> visited;
+    std::vector<std::pair<vertex *, int>> paths;
 
-    frontera.push_back(start);
-    niveles[start] = 0;
+    frontier.push_back(start);
+    visited[start] = true;
+    paths.push_back({start, 0});
 
     int i = 1;
 
-    while (!frontera.empty()) {
+    while (!frontier.empty()) {
+
         std::vector<vertex *> next;
 
-        for (const vertex *v : frontera) {
+        for (const vertex *v : frontier) {
             for (const auto edge : v->adj) {
 
-                bool exist = std::find(frontera.begin(), frontera.end(), edge.first) != frontera.end();
-
-                if (!exist) {
+                if (!visited[edge.first]) {
                     vertex *to = edge.first;
                     next.push_back(to);
-                    niveles[to] = i;
+                    paths.push_back({to, i});
+                    visited[to] = true;
                 }
             }
         }
 
-        frontera = next;
+        frontier = next;
         i++;
     }
-}
 
-void graph::show_bfs() {
+    /* Mostrar recorrido y niveles del grafo */
 
     std::cout << " " << std::endl;
-    std::cout << "Niveles" << std::endl;
+    std::cout << "Algoritmo: BFS" << std::endl;
     std::cout << " " << std::endl;
 
-    for (auto nivel : niveles) {
-        std::cout << nivel.first->name << " -> " << nivel.second << std::endl;
+    std::cout << "Recorrido en anchura:  [ ";
+
+    for (const auto path : paths) {
+        std::cout << path.first->name << " ";
     }
+
+    std::cout << "]" << std::endl;
+    std::cout << "Niveles del recorrido: [ ";
+
+    for (const auto path : paths) {
+        std::cout << path.second << " ";
+    }
+
+    std::cout << "]" << std::endl;
 }
 
 void graph::dfs(vertex *s) {
@@ -77,14 +95,14 @@ void graph::show_dfs() {
 void graph::dijkstra(vertex *start) {
 
     std::unordered_map<vertex *, int> distances;
-    std::unordered_map<vertex *, std::vector<vertex *>> parents;
+    std::unordered_map<vertex *, std::vector<vertex *>> paths;
 
     for (vertex *v : vertices) {
         distances[v] = oo;
     }
 
     distances[start] = 0;
-    parents[start] = {start};
+    paths[start] = {start};
 
     std::priority_queue<std::pair<vertex *, int>> pq;
     pq.push({start, 0});
@@ -102,13 +120,17 @@ void graph::dijkstra(vertex *start) {
 
             if (distance < distances[v]) {
                 distances[v] = distance;
-                parents[v] = parents[u];
-                parents[v].push_back(v);
+                paths[v] = paths[u];
+                paths[v].push_back(v);
                 pq.push({v, -distance});
             }
         }
     }
 
+    /* Mostrar recorrido y caminos mínimos */
+
+    std::cout << " " << std::endl;
+    std::cout << "Algoritmo: Dijkstra" << std::endl;
     std::cout << " " << std::endl;
     std::cout << "Distancias mínimas desde el vertice " << start->name << " a:";
 
@@ -118,7 +140,7 @@ void graph::dijkstra(vertex *start) {
         if (distances[v] != oo && v != start) {
             std::cout << "Vertice " << v->name << " - Camino: [ ";
 
-            for (vertex *p : parents[v]) {
+            for (vertex *p : paths[v]) {
                 std::cout << p->name << " ";
             }
 
@@ -140,12 +162,16 @@ void graph::topological_sort() {
     }
 
     std::cout << " " << std::endl;
-    std::cout << "Orden topológico: ";
+    std::cout << "Algoritmo: Ordenamiento topológico" << std::endl;
+    std::cout << " " << std::endl;
+    std::cout << "Ordenamiento: ";
 
     while (!topological_stack.empty()) {
         std::cout << topological_stack.top()->name << " ";
         topological_stack.pop();
     }
+
+    std::cout << "" << std::endl;
 }
 
 void graph::topological_sort_recursive(vertex *v) {
