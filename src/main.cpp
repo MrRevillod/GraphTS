@@ -6,7 +6,8 @@
 
 void bfs() {
 
-    directed_graph g;
+    directed_graph g = directed_graph("Grafo I");
+
     vertex *a = new vertex("a");
     vertex *z = new vertex("z");
     vertex *s = new vertex("s");
@@ -36,39 +37,14 @@ void bfs() {
     g.add_edge(c, v, 0);
     g.add_edge(f, v, 0);
 
+    g.show_name();
     g.bfs(s);
-}
-
-void dfs() {
-
-    directed_graph g;
-    vertex *uno = new vertex("1");
-    vertex *dos = new vertex("2");
-    vertex *tres = new vertex("3");
-    vertex *cuatro = new vertex("4");
-    vertex *cinco = new vertex("5");
-    vertex *seis = new vertex("6");
-
-    g.add_vertex(uno);
-    g.add_vertex(dos);
-    g.add_vertex(tres);
-    g.add_vertex(cuatro);
-    g.add_vertex(cinco);
-    g.add_vertex(seis);
-
-    g.add_edge(uno, dos, 0);
-    g.add_edge(uno, tres, 0);
-    g.add_edge(dos, cuatro, 0);
-    g.add_edge(cuatro, cinco, 0);
-    g.add_edge(cuatro, seis, 0);
-
-    g.dfs(uno);
-    g.show_dfs();
 }
 
 void dijkstra() {
 
-    directed_graph g;
+    directed_graph g = directed_graph("Grafo II");
+
     vertex *A = new vertex("A");
     vertex *B = new vertex("B");
     vertex *C = new vertex("C");
@@ -87,11 +63,13 @@ void dijkstra() {
     g.add_edge(D, E, 2);
     g.add_edge(E, C, 1);
 
+    g.show_name();
     g.dijkstra(A);
     g.topological_sort();
 }
 
 int main() {
+    bfs();
     dijkstra();
     return 0;
 }

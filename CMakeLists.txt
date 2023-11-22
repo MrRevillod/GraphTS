@@ -7,7 +7,7 @@ set(CMAKE_C_COMPILER "gcc")
 set(CMAKE_CXX_COMPILER "g++")
 
 include_directories(
-        ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/include
 )
 
 enable_testing()
@@ -16,7 +16,6 @@ file(GLOB all_SRCS
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
     "${PROJECT_SOURCE_DIR}/src/*.c"
 )
-
 
 add_executable(demo ${all_SRCS})
 

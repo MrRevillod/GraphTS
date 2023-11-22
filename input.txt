@@ -1,6 +1,0 @@
-Vertices:
-A B C D E F
-
-Edges:
-A B 1
-C A 2
