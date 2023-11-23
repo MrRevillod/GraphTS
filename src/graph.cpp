@@ -1,16 +1,12 @@
 
-#include "graph.hpp"
 #include <algorithm>
+#include <colormod.hpp>
+#include <graph.hpp>
 #include <iostream>
 #include <limits>
 #include <queue>
 #include <stdexcept>
 #include <string>
-
-Color::Modifier red(Color::FG_RED);
-Color::Modifier green(Color::FG_GREEN);
-Color::Modifier blue(Color::FG_BLUE);
-Color::Modifier def(Color::FG_DEFAULT);
 
 void graph::bfs(vertex *start) {
 
@@ -47,23 +43,26 @@ void graph::bfs(vertex *start) {
     /* Mostrar recorrido y niveles del grafo */
 
     std::cout << " " << std::endl;
-    std::cout << green << "Algoritmo: " << def << "BFS" << std::endl;
+    std::cout << Color::green << "Algoritmo: " << Color::def << "BFS" << std::endl;
     std::cout << " " << std::endl;
 
-    std::cout << "Recorrido en anchura: " << red << " [ " << def;
+    std::cout << "Vertice de partida: " << start->name << std::endl;
+    std::cout << " " << std::endl;
+
+    std::cout << "Recorrido en anchura: " << Color::red << " [ " << Color::def;
 
     for (const auto path : paths) {
         std::cout << path.first->name << " ";
     }
 
-    std::cout << red << "]" << def << std::endl;
-    std::cout << "Niveles del recorrido: " << red << "[ " << def;
+    std::cout << Color::red << "]" << Color::def << std::endl;
+    std::cout << "Niveles del recorrido: " << Color::red << "[ " << Color::def;
 
     for (const auto path : paths) {
         std::cout << path.second << " ";
     }
 
-    std::cout << red << "]" << def << std::endl;
+    std::cout << Color::red << "]" << Color::def << std::endl;
 }
 
 void graph::dfs(vertex *start) {
@@ -72,7 +71,7 @@ void graph::dfs(vertex *start) {
     std::unordered_map<vertex *, vertex *> path;
 
     std::cout << " " << std::endl;
-    std::cout << green << "Algoritmo: " << def << "DFS" << std::endl;
+    std::cout << Color::green << "Algoritmo: " << Color::def << "DFS" << std::endl;
     std::cout << " " << std::endl;
 
     for (vertex *v : vertices) {
@@ -81,13 +80,16 @@ void graph::dfs(vertex *start) {
 
     dfs_recursive(start, visited, path);
 
-    std::cout << "Recorrido en profundidad: " << red << "[ " << def;
+    std::cout << "Vertice de partida: " << start->name << std::endl;
+    std::cout << " " << std::endl;
+
+    std::cout << "Recorrido en profundidad: " << Color::red << "[ " << Color::def;
 
     for (const auto path : path) {
         std::cout << path.first->name << " ";
     }
 
-    std::cout << red << "]" << def << std::endl;
+    std::cout << Color::red << "]" << Color::def << std::endl;
 }
 
 void graph::dfs_recursive(vertex *s, std::unordered_map<vertex *, bool> &visited, std::unordered_map<vertex *, vertex *> &parents) {
@@ -126,6 +128,11 @@ void graph::dijkstra(vertex *start) {
 
             vertex *v = edge.first;
             int weight = edge.second;
+
+            if (weight < 0) {
+                throw std::runtime_error("\n\n El argoritmo de dijkstra no trabaja con pesos negativos\n");
+            }
+
             int distance = distances[u] + weight;
 
             if (distance < distances[v]) {
@@ -140,21 +147,25 @@ void graph::dijkstra(vertex *start) {
     /* Mostrar recorrido y caminos mínimos */
 
     std::cout << " " << std::endl;
-    std::cout << green << "Algoritmo: " << def << "Dijkstra" << std::endl;
+    std::cout << Color::green << "Algoritmo: " << Color::def << "Dijkstra" << std::endl;
     std::cout << " " << std::endl;
+
+    std::cout << "Vertice de partida: " << start->name << std::endl;
+    std::cout << " " << std::endl;
+
     std::cout << "Distancias mínimas desde el vertice " << start->name << " a:";
 
     for (vertex *v : vertices) {
         std::cout << "" << std::endl;
 
         if (distances[v] != oo && v != start) {
-            std::cout << "Vertice " << v->name << " - Camino:" << red << " [ " << def;
+            std::cout << "Vertice " << v->name << " - Camino:" << Color::red << " [ " << Color::def;
 
             for (vertex *p : paths[v]) {
                 std::cout << p->name << " ";
             }
 
-            std::cout << red << "]" << def << " - Costo: " << (distances[v] == oo ? "∞" : std::to_string(distances[v])) << std::endl;
+            std::cout << Color::red << "]" << Color::def << " - Costo: " << (distances[v] == oo ? "∞" : std::to_string(distances[v])) << std::endl;
         }
     }
 }
@@ -175,16 +186,16 @@ void graph::topological_sort() {
     }
 
     std::cout << " " << std::endl;
-    std::cout << green << "Algoritmo: " << def << "Ordenamiento topológico" << std::endl;
+    std::cout << Color::green << "Algoritmo: " << Color::def << "Ordenamiento topológico" << std::endl;
     std::cout << " " << std::endl;
-    std::cout << "Ordenamiento: " << red << "[ " << def;
+    std::cout << "Ordenamiento: " << Color::red << "[ " << Color::def;
 
     while (!topological_stack.empty()) {
         std::cout << topological_stack.top()->name << " ";
         topological_stack.pop();
     }
 
-    std::cout << red << "]" << def << std::endl;
+    std::cout << Color::red << "]" << Color::def << std::endl;
 }
 
 void graph::topological_sort_recursive(vertex *v, std::unordered_map<vertex *, bool> &visited, std::stack<vertex *> &topological_stack) {

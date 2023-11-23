@@ -1,10 +1,10 @@
 
-#include "und_graph.hpp"
-#include "errors.hpp"
 #include <algorithm>
+#include <errors.hpp>
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <und_graph.hpp>
 
 void undirected_graph::show() {
 

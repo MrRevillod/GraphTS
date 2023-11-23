@@ -1,7 +1,7 @@
 
-#include "dir_graph.hpp"
-#include "errors.hpp"
 #include <algorithm>
+#include <dir_graph.hpp>
+#include <errors.hpp>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>

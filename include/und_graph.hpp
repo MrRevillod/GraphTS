@@ -2,7 +2,7 @@
 #ifndef UND_GRAPH_HPP
 #define UND_GRAPH_HPP
 
-#include "graph.hpp"
+#include <graph.hpp>
 
 struct undirected_graph : graph {
 

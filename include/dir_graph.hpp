@@ -2,7 +2,7 @@
 #ifndef DIR_GRAPH_HPP
 #define DIR_GRAPH_HPP
 
-#include "graph.hpp"
+#include <graph.hpp>
 
 struct directed_graph : graph {
 
