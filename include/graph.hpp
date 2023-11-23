@@ -34,8 +34,6 @@ struct graph {
     std::string name;
     std::vector<vertex *> vertices;
     std::stack<vertex *> topological_stack;
-    std::unordered_map<vertex *, bool> visited;
-    std::unordered_map<vertex *, vertex *> parents;
 
     graph(const std::string &n) : name(n) {}
 
@@ -78,12 +76,14 @@ struct graph {
     }
 
     void bfs(vertex *start);
-    void dfs(vertex *s);
-    void dijkstra(vertex *start);
-    void topological_sort();
-    void topological_sort_recursive(vertex *v);
 
-    void show_dfs();
+    void dfs(vertex *s);
+    void dfs_recursive(vertex *s, std::unordered_map<vertex *, bool> &visited, std::unordered_map<vertex *, vertex *> &paths);
+
+    void dijkstra(vertex *start);
+
+    void topological_sort();
+    void topological_sort_recursive(vertex *s, std::unordered_map<vertex *, bool> &visited, std::stack<vertex *> &topological_stack);
 };
 
 #endif

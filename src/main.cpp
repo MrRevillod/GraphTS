@@ -39,6 +39,7 @@ void bfs() {
 
     g.show_name();
     g.bfs(s);
+    g.dfs(s);
 }
 
 void dijkstra() {

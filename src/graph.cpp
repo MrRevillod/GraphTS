@@ -47,7 +47,7 @@ void graph::bfs(vertex *start) {
     /* Mostrar recorrido y niveles del grafo */
 
     std::cout << " " << std::endl;
-    std::cout << "Algoritmo: BFS" << std::endl;
+    std::cout << green << "Algoritmo: " << def << "BFS" << std::endl;
     std::cout << " " << std::endl;
 
     std::cout << "Recorrido en anchura:  [ ";
@@ -66,30 +66,40 @@ void graph::bfs(vertex *start) {
     std::cout << "]" << std::endl;
 }
 
-void graph::dfs(vertex *s) {
+void graph::dfs(vertex *start) {
+
+    std::unordered_map<vertex *, bool> visited;
+    std::unordered_map<vertex *, vertex *> path;
+
+    std::cout << " " << std::endl;
+    std::cout << green << "Algoritmo: " << def << "DFS" << std::endl;
+    std::cout << " " << std::endl;
+
+    for (vertex *v : vertices) {
+        visited[v] = false;
+    }
+
+    dfs_recursive(start, visited, path);
+
+    std::cout << "Recorrido en profundidad: [ ";
+
+    for (const auto path : path) {
+        std::cout << path.first->name << " ";
+    }
+
+    std::cout << "]" << std::endl;
+}
+
+void graph::dfs_recursive(vertex *s, std::unordered_map<vertex *, bool> &visited, std::unordered_map<vertex *, vertex *> &parents) {
 
     visited[s] = true;
 
     for (const auto edge : s->adj) {
-
         if (!visited[edge.first]) {
             parents[edge.first] = s;
-            dfs(edge.first);
+            dfs_recursive(edge.first, visited, parents);
         }
     }
-}
-
-void graph::show_dfs() {
-
-    std::cout << " " << std::endl;
-    std::cout << "Padres " << std::endl;
-    std::cout << " " << std::endl;
-
-    for (const auto parent : parents) {
-        std::cout << parent.first->name << " -> " << parent.second->name << std::endl;
-    }
-
-    std::cout << " " << std::endl;
 }
 
 void graph::dijkstra(vertex *start) {
@@ -130,7 +140,7 @@ void graph::dijkstra(vertex *start) {
     /* Mostrar recorrido y caminos mínimos */
 
     std::cout << " " << std::endl;
-    std::cout << "Algoritmo: Dijkstra" << std::endl;
+    std::cout << green << "Algoritmo: " << def << "Dijkstra" << std::endl;
     std::cout << " " << std::endl;
     std::cout << "Distancias mínimas desde el vertice " << start->name << " a:";
 
@@ -151,18 +161,21 @@ void graph::dijkstra(vertex *start) {
 
 void graph::topological_sort() {
 
+    std::unordered_map<vertex *, bool> visited;
+    std::stack<vertex *> topological_stack;
+
     for (vertex *v : vertices) {
         visited[v] = false;
     }
 
     for (vertex *v : vertices) {
         if (!visited[v]) {
-            topological_sort_recursive(v);
+            topological_sort_recursive(v, visited, topological_stack);
         }
     }
 
     std::cout << " " << std::endl;
-    std::cout << "Algoritmo: Ordenamiento topológico" << std::endl;
+    std::cout << green << "Algoritmo: " << def << "Ordenamiento topológico" << std::endl;
     std::cout << " " << std::endl;
     std::cout << "Ordenamiento: ";
 
@@ -174,13 +187,13 @@ void graph::topological_sort() {
     std::cout << "" << std::endl;
 }
 
-void graph::topological_sort_recursive(vertex *v) {
+void graph::topological_sort_recursive(vertex *v, std::unordered_map<vertex *, bool> &visited, std::stack<vertex *> &topological_stack) {
 
     visited[v] = true;
 
     for (const auto edge : v->adj) {
         if (!visited[edge.first]) {
-            topological_sort_recursive(edge.first);
+            topological_sort_recursive(edge.first, visited, topological_stack);
         }
     }
 
