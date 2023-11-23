@@ -2,24 +2,26 @@
 #include "dir_graph.hpp"
 #include "errors.hpp"
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 
 void directed_graph::show() {
 
-    std::cout << " " << std::endl;
+    std::cout << "Visualización del grafo:\n\n";
 
     for (const vertex *v : vertices) {
+        std::cout << "Vértice: " << v->name << "\n";
         for (const auto edge : v->adj) {
             vertex *to = edge.first;
             int weight = edge.second;
-
-            std::cout << v->name << " --> " << weight << " --> " << to->name << std::endl;
+            std::cout << "  --> " << to->name << " (peso: " << weight << ")\n";
         }
+        std::cout << "\n";
     }
 
-    std::cout << " " << std::endl;
+    std::cout << "Fin de la visualización del grafo.\n";
 }
 
 void directed_graph::add_edge(vertex *from, vertex *to, int weight) {
