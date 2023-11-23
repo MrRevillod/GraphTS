@@ -50,20 +50,20 @@ void graph::bfs(vertex *start) {
     std::cout << green << "Algoritmo: " << def << "BFS" << std::endl;
     std::cout << " " << std::endl;
 
-    std::cout << "Recorrido en anchura:  [ ";
+    std::cout << "Recorrido en anchura: " << red << " [ " << def;
 
     for (const auto path : paths) {
         std::cout << path.first->name << " ";
     }
 
-    std::cout << "]" << std::endl;
-    std::cout << "Niveles del recorrido: [ ";
+    std::cout << red << "]" << def << std::endl;
+    std::cout << "Niveles del recorrido: " << red << "[ " << def;
 
     for (const auto path : paths) {
         std::cout << path.second << " ";
     }
 
-    std::cout << "]" << std::endl;
+    std::cout << red << "]" << def << std::endl;
 }
 
 void graph::dfs(vertex *start) {
@@ -81,13 +81,13 @@ void graph::dfs(vertex *start) {
 
     dfs_recursive(start, visited, path);
 
-    std::cout << "Recorrido en profundidad: [ ";
+    std::cout << "Recorrido en profundidad: " << red << "[ " << def;
 
     for (const auto path : path) {
         std::cout << path.first->name << " ";
     }
 
-    std::cout << "]" << std::endl;
+    std::cout << red << "]" << def << std::endl;
 }
 
 void graph::dfs_recursive(vertex *s, std::unordered_map<vertex *, bool> &visited, std::unordered_map<vertex *, vertex *> &parents) {
@@ -148,13 +148,13 @@ void graph::dijkstra(vertex *start) {
         std::cout << "" << std::endl;
 
         if (distances[v] != oo && v != start) {
-            std::cout << "Vertice " << v->name << " - Camino: [ ";
+            std::cout << "Vertice " << v->name << " - Camino:" << red << " [ " << def;
 
             for (vertex *p : paths[v]) {
                 std::cout << p->name << " ";
             }
 
-            std::cout << "] - Costo: " << (distances[v] == oo ? "∞" : std::to_string(distances[v])) << std::endl;
+            std::cout << red << "]" << def << " - Costo: " << (distances[v] == oo ? "∞" : std::to_string(distances[v])) << std::endl;
         }
     }
 }
@@ -177,14 +177,14 @@ void graph::topological_sort() {
     std::cout << " " << std::endl;
     std::cout << green << "Algoritmo: " << def << "Ordenamiento topológico" << std::endl;
     std::cout << " " << std::endl;
-    std::cout << "Ordenamiento: ";
+    std::cout << "Ordenamiento: " << red << "[ " << def;
 
     while (!topological_stack.empty()) {
         std::cout << topological_stack.top()->name << " ";
         topological_stack.pop();
     }
 
-    std::cout << "" << std::endl;
+    std::cout << red << "]" << def << std::endl;
 }
 
 void graph::topological_sort_recursive(vertex *v, std::unordered_map<vertex *, bool> &visited, std::stack<vertex *> &topological_stack) {

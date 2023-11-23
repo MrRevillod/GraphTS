@@ -37,7 +37,7 @@ void bfs() {
     g.add_edge(c, v, 0);
     g.add_edge(f, v, 0);
 
-    g.show_name();
+    g.show_props();
     g.bfs(s);
     g.dfs(s);
 }
@@ -64,7 +64,7 @@ void dijkstra() {
     g.add_edge(D, E, 2);
     g.add_edge(E, C, 1);
 
-    g.show_name();
+    g.show_props();
     g.dijkstra(A);
     g.topological_sort();
 }

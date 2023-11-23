@@ -44,9 +44,51 @@ struct graph {
         }
     }
 
-    void show_name() {
+    void show_props() {
+
         std::cout << " " << std::endl;
         std::cout << blue << name << def << std::endl;
+
+        std::cout << " " << std::endl;
+        std::cout << green << "Vertices: " << def << vertices.size() << std::endl;
+        std::cout << green << "Aristas: " << def;
+
+        int n_edges = 0;
+
+        for (const vertex *v : vertices) {
+            n_edges += v->adj.size();
+        }
+
+        std::cout << n_edges << std::endl;
+        std::cout << green << "Peso total: " << def << get_total_weight() << std::endl;
+        std::cout << green << "Tiene camino de euler: " << def;
+        std::cout << (has_euler_path() ? "Si" : "No") << std::endl;
+    }
+
+    int has_euler_path() {
+
+        int n_impa = 0;
+
+        for (const vertex *v : vertices) {
+            if (v->adj.size() % 2 != 0) {
+                n_impa += 1;
+            }
+        }
+
+        return n_impa <= 2;
+    }
+
+    int get_total_weight() {
+
+        int total = 0;
+
+        for (const vertex *v : vertices) {
+            for (const auto edge : v->adj) {
+                total += edge.second;
+            }
+        }
+
+        return total;
     }
 
     bool v_exist(vertex *v) {
