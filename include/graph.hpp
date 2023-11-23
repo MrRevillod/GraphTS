@@ -33,7 +33,6 @@ struct graph {
 
     std::string name;
     std::vector<vertex *> vertices;
-    std::stack<vertex *> topological_stack;
 
     graph(const std::string &n) : name(n) {}
 
