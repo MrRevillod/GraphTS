@@ -2,36 +2,12 @@
     {
         "vertices": ["A", "B", "C", "D"],
         "edges": [
-            {
-                "from": "A",
-                "to": "B",
-                "weight": 1
-            },
-            {
-                "from": "B",
-                "to": "C",
-                "weight": 2
-            },
-            {
-                "from": "C",
-                "to": "D",
-                "weight": 3
-            },
-            {
-                "from": "D",
-                "to": "A",
-                "weight": 4
-            },
-            {
-                "from": "A",
-                "to": "C",
-                "weight": 5
-            },
-            {
-                "from": "B",
-                "to": "C",
-                "weight": 6
-            }
+            "A:B:1",
+            "B:C:2",
+            "c:D:3",
+            "D:A:4",
+            "A:C:5",
+            "B:D:6"
         ]
     }
 ]
