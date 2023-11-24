@@ -1,13 +1,24 @@
 [
     {
+        "directed": true,
         "vertices": ["A", "B", "C", "D"],
         "edges": [
             "A:B:1",
             "B:C:2",
-            "c:D:3",
+            "C:D:3",
             "D:A:4",
             "A:C:5",
             "B:D:6"
+        ]
+    },
+    {
+        "directed": false,
+        "vertices": ["hola", "buenas", "tardes", "chabal"],
+        "edges": [
+            "hola:buenas:3",
+            "buenas:tardes:489",
+            "tardes:chabal:2",
+            "chabal:hola:30"
         ]
     }
 ]

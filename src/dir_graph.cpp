@@ -24,25 +24,19 @@ void directed_graph::show() {
 
 void directed_graph::add_edge(vertex *from, vertex *to, int weight) {
 
-    if (from == to) {
+    if (from == to)
         throw std::runtime_error(ERROR_SELF_CONNECTION);
-    }
 
-    if (!v_exist(from) || !v_exist(to)) {
+    if (!v_exist(from) || !v_exist(to))
         throw std::runtime_error(ERROR_VERTEX_NOT_FOUND);
-    }
 
-    for (const auto edge : from->adj) {
-        if (edge.first == to) {
+    for (const auto edge : from->adj)
+        if (edge.first == to)
             throw std::runtime_error("\nEl vertice " + from->name + "ya posee una conexión con el vertice " + to->name + "\n");
-        }
-    }
 
-    for (const auto edge : to->adj) {
-        if (edge.first == from) {
+    for (const auto edge : to->adj)
+        if (edge.first == from)
             throw std::runtime_error("\nEl vertice " + to->name + "ya posee una conexión con el vertice " + from->name + "\n");
-        }
-    }
 
     from->adj[to] = weight;
 }

@@ -32,10 +32,21 @@ struct graph {
     std::stack<vertex *> topological_stack;
 
     ~graph() {
-
-        for (vertex *v : vertices) {
+        for (vertex *v : vertices)
             delete (v);
-        }
+    }
+
+    vertex *get_vertex(const std::string name) {
+
+        vertex *finded = nullptr;
+        for (auto v : vertices)
+            if (v->name == name)
+                finded = v;
+
+        if (finded == nullptr)
+            throw std::runtime_error("\n\nEl vertice " + name + " no existe en el grafo\n");
+
+        return finded;
     }
 
     bool v_exist(vertex *v) {
@@ -69,6 +80,9 @@ struct graph {
     void dijkstra(vertex *start);
     void topological_sort();
     void topological_sort_recursive(vertex *v);
+
+    // virtual void add_edge(vertex *from, vertex *to, int weight);
+    // virtual void rm_edge(vertex *from, vertex *to);
 
     void bellman_ford(vertex *start);
     void floyd_warshall();

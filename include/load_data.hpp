@@ -6,6 +6,6 @@
 #include <jsoncpp/json/json.h>
 #include <vector>
 
-std::vector<graph> load_data(const std::string file_name);
+std::vector<graph *> load_data(const std::string file_name);
 
 #endif
