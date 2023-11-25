@@ -25,6 +25,7 @@ void graph::bfs(vertex *start) {
         std::vector<vertex *> next;
 
         for (const vertex *v : frontier) {
+
             for (const auto edge : v->adj) {
 
                 if (!visited[edge.first]) {
@@ -51,14 +52,14 @@ void graph::bfs(vertex *start) {
 
     std::cout << "Recorrido en anchura: " << Color::red << " [ " << Color::def;
 
-    for (const auto path : paths) {
+    for (const auto &path : paths) {
         std::cout << path.first->name << " ";
     }
 
     std::cout << Color::red << "]" << Color::def << std::endl;
     std::cout << "Niveles del recorrido: " << Color::red << "[ " << Color::def;
 
-    for (const auto path : paths) {
+    for (const auto &path : paths) {
         std::cout << path.second << " ";
     }
 
@@ -196,6 +197,7 @@ void graph::topological_sort() {
     }
 
     std::cout << Color::red << "]" << Color::def << std::endl;
+    std::cout << std::endl;
 }
 
 void graph::topological_sort_recursive(vertex *v, std::unordered_map<vertex *, bool> &visited, std::stack<vertex *> &topological_stack) {
