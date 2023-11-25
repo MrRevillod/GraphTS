@@ -1,5 +1,6 @@
 [
     {
+        "name": "Grafo I",
         "directed": true,
         "vertices": ["A", "B", "C", "D"],
         "edges": [
@@ -9,9 +10,15 @@
             "D:A:4",
             "A:C:5",
             "B:D:6"
+        ],
+        "algorithms": [
+            "dijkstra:A",
+            "bfs:A",
+            "dfs:A"
         ]
     },
     {
+        "name": "Grafo II",
         "directed": false,
         "vertices": ["hola", "buenas", "tardes", "chabal"],
         "edges": [
@@ -19,6 +26,9 @@
             "buenas:tardes:489",
             "tardes:chabal:2",
             "chabal:hola:30"
+        ],
+        "algorithms": [
+            "dijkstra:hola"
         ]
     }
 ]

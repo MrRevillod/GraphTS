@@ -7,26 +7,6 @@
 #include <stdexcept>
 #include <string>
 
-void directed_graph::show() {
-
-    std::cout << "Visualización del grafo:\n\n";
-
-    for (const vertex *v : vertices) {
-
-        std::cout << "Vértice: " << v->name << "\n";
-
-        for (const auto edge : v->adj) {
-            vertex *to = edge.first;
-            int weight = edge.second;
-            std::cout << "  --> " << to->name << " (peso: " << weight << ")\n";
-        }
-
-        std::cout << "\n";
-    }
-
-    std::cout << "Fin de la visualización del grafo.\n";
-}
-
 void directed_graph::add_edge(vertex *from, vertex *to, int weight) {
 
     if (from == to) {

@@ -6,22 +6,6 @@
 #include <string>
 #include <und_graph.hpp>
 
-void undirected_graph::show() {
-
-    std::cout << " " << std::endl;
-
-    for (const vertex *v : vertices) {
-        for (const auto edge : v->adj) {
-            vertex *to = edge.first;
-            int weight = edge.second;
-
-            std::cout << v->name << " <-- " << weight << " --> " << to->name << std::endl;
-        }
-    }
-
-    std::cout << " " << std::endl;
-}
-
 void undirected_graph::add_edge(vertex *from, vertex *to, int weight) {
 
     if (from == to) {

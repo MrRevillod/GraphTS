@@ -31,7 +31,7 @@ struct graph {
 
     graph(const std::string &n) : name(n) {}
 
-    ~graph() {
+    virtual ~graph() {
         for (vertex *v : vertices) {
             delete (v);
         }
@@ -54,7 +54,7 @@ struct graph {
         return finded;
     }
 
-    void show_props() {
+    void show() {
 
         std::cout << " " << std::endl;
         std::cout << Color::blue << name << Color::def << std::endl;
@@ -137,8 +137,8 @@ struct graph {
     void topological_sort();
     void topological_sort_recursive(vertex *s, std::unordered_map<vertex *, bool> &visited, std::stack<vertex *> &topological_stack);
 
-    // virtual void add_edge(vertex *from, vertex *to, int weight);
-    // virtual void rm_edge(vertex *from, vertex *to);
+    virtual void add_edge(vertex *from, vertex *to, int weight) = 0;
+    virtual void rm_edge(vertex *from, vertex *to) = 0;
 };
 
 #endif
