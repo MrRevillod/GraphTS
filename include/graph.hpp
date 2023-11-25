@@ -134,9 +134,6 @@ struct graph {
 
     void dijkstra(vertex *start);
 
-    void topological_sort();
-    void topological_sort_recursive(vertex *s, std::unordered_map<vertex *, bool> &visited, std::stack<vertex *> &topological_stack);
-
     virtual void add_edge(vertex *from, vertex *to, int weight) = 0;
     virtual void rm_edge(vertex *from, vertex *to) = 0;
 };

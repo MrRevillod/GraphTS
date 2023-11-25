@@ -54,6 +54,14 @@ T *create_graph(Json::Value &data) {
         std::getline(ss_alg, alg_name, ':');
         std::getline(ss_alg, start_name, ':');
 
+        if (!alg_map[alg_name]) {
+            throw std::runtime_error("\n\n El algoritmo " + alg_name + "no está definido en el grafo.");
+        }
+
+        if (start_name.empty()) {
+            throw std::runtime_error("\n\n Debes especificar un vertice de partida.");
+        }
+
         vertex *start_vertex = grafo->get_vertex(start_name);
         alg_map[alg_name](start_vertex);
     }

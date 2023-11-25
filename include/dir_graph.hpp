@@ -10,6 +10,9 @@ struct directed_graph : graph {
 
     void add_edge(vertex *from, vertex *to, int weight) override;
     void rm_edge(vertex *from, vertex *to) override;
+
+    void topological_sort();
+    void topological_sort_recursive(vertex *s, std::unordered_map<vertex *, bool> &visited, std::stack<vertex *> &topological_stack);
 };
 
 #endif
