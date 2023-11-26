@@ -75,7 +75,7 @@ struct graph {
         std::cout << (has_euler_path() ? "Si" : "No") << std::endl;
     }
 
-    int has_euler_path() {
+    bool has_euler_path() {
 
         int n_impa = 0;
 
