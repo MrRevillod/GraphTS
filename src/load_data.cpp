@@ -9,25 +9,23 @@
 #include <stdlib.h>
 #include <und_graph.hpp>
 
+typedef std::map<std::string, std::function<void(vertex *)>> function_map;
+
 template <class T>
-T *create_graph(Json::Value &data) {
+void create_vertices(T *graph, Json::Value &data) {
 
-    std::string g_name = data["name"].asString();
-    T *grafo = new T(g_name);
-
-    std::map<std::string, std::function<void(vertex *)>> alg_map = {
-        {"bfs", [&](vertex *v) { grafo->bfs(v); }},
-        {"dfs", [&](vertex *v) { grafo->dfs(v); }},
-        {"dijkstra", [&](vertex *v) { grafo->dijkstra(v); }}
-
-    };
-
-    for (auto v : data["vertices"]) {
-        grafo->add_vertex(new vertex(v.asString()));
+    auto vertices = data["vertices"];
+    for (auto v : vertices) {
+        graph->add_vertex(new vertex(v.asString()));
     }
+}
 
-    for (auto e : data["edges"]) {
+template <class T>
+void create_edges(T *graph, Json::Value &data) {
 
+    auto edges = data["edges"];
+
+    for (auto e : edges) {
         std::string edge = e.asString();
         std::stringstream ss_edge(edge);
         std::string from, to, weight_str;
@@ -36,17 +34,29 @@ T *create_graph(Json::Value &data) {
         std::getline(ss_edge, to, ':');
         std::getline(ss_edge, weight_str, ':');
 
-        vertex *v_from = grafo->get_vertex(from);
-        vertex *v_to = grafo->get_vertex(to);
+        vertex *v_from = graph->get_vertex(from);
+        vertex *v_to = graph->get_vertex(to);
         int weight = std::stoi(weight_str);
 
-        grafo->add_edge(v_from, v_to, weight);
+        graph->add_edge(v_from, v_to, weight);
     }
+}
 
-    grafo->show();
+template <class T>
+void run_graph(T *graph, Json::Value &data) {
 
-    for (auto a : data["algorithms"]) {
+    function_map alg_map = {
+        {"bfs", [&](vertex *v) { graph->bfs(v); }},
+        {"dfs", [&](vertex *v) { graph->dfs(v); }},
+        {"dijkstra", [&](vertex *v) { graph->dijkstra(v); }}
 
+    };
+
+    graph->show();
+
+    auto algorithms = data["algorithms"];
+
+    for (auto a : algorithms) {
         std::string alg = a.asString();
         std::stringstream ss_alg(alg);
         std::string alg_name, start_name;
@@ -62,11 +72,21 @@ T *create_graph(Json::Value &data) {
             throw std::runtime_error("\n\n Debes especificar un vertice de partida.");
         }
 
-        vertex *start_vertex = grafo->get_vertex(start_name);
+        vertex *start_vertex = graph->get_vertex(start_name);
         alg_map[alg_name](start_vertex);
     }
+}
 
-    return grafo;
+template <class T>
+T *create_graph(Json::Value &data) {
+
+    std::string g_name = data["name"].asString();
+    T *graph = new T(g_name);
+
+    create_vertices(graph, data);
+    create_edges(graph, data);
+
+    return graph;
 }
 
 void load_data(const std::string file_name) {
@@ -89,10 +109,21 @@ void load_data(const std::string file_name) {
         bool directed = g["directed"].asBool();
 
         if (!directed) {
-            create_graph<undirected_graph>(g);
+            auto graph = create_graph<undirected_graph>(g);
+            run_graph(graph, g);
             continue;
         }
 
-        create_graph<directed_graph>(g);
+        auto graph = create_graph<directed_graph>(g);
+        run_graph(graph, g);
+
+        std::string input;
+        std::cout << Color::green << "\nPresiona Enter para ver el siguiente grafo o \ncualquier otra tecla para salir: " << Color::def;
+        std::getline(std::cin, input);
+        if (!input.empty()) {
+            break;
+        }
+
+        std::cout << "\033[2J\033[1;1H";
     }
 }
