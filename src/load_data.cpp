@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <und_graph.hpp>
 
-typedef std::map<std::string, std::function<void(vertex *)>> function_map;
+typedef std::map<std::string, std::function<void(vertex *)>> std_function_map;
 
 template <class T>
 void create_vertices(T *graph, Json::Value &data) {
@@ -45,7 +45,7 @@ void create_edges(T *graph, Json::Value &data) {
 template <class T>
 void run_graph(T *graph, Json::Value &data) {
 
-    function_map alg_map = {
+    std_function_map alg_map = {
         {"bfs", [&](vertex *v) { graph->bfs(v); }},
         {"dfs", [&](vertex *v) { graph->dfs(v); }},
         {"dijkstra", [&](vertex *v) { graph->dijkstra(v); }}
@@ -123,7 +123,5 @@ void load_data(const std::string file_name) {
         if (!input.empty()) {
             break;
         }
-
-        std::cout << "\033[2J\033[1;1H";
     }
 }
