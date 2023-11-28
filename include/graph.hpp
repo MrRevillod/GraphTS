@@ -13,7 +13,6 @@
 #define oo 0x3f3f3f3f
 
 struct vertex {
-
     std::string name;
     std::unordered_map<vertex *, int> adj;
 
@@ -32,30 +31,25 @@ struct graph {
     graph(const std::string &n) : name(n) {}
 
     virtual ~graph() {
-        for (vertex *v : vertices) {
+        for (vertex *v : vertices)
             delete (v);
-        }
     }
 
     vertex *get_vertex(const std::string name) {
 
         vertex *finded = nullptr;
 
-        for (auto v : vertices) {
-            if (v->name == name) {
+        for (auto v : vertices)
+            if (v->name == name)
                 finded = v;
-            }
-        }
 
-        if (finded == nullptr) {
+        if (finded == nullptr)
             throw std::runtime_error("\n\nEl vertice " + name + " no existe en el grafo\n");
-        }
 
         return finded;
     }
 
     void show() {
-
         std::cout << " " << std::endl;
         std::cout << Color::blue << name << Color::def << std::endl;
 
@@ -76,14 +70,11 @@ struct graph {
     }
 
     bool has_euler_path() {
-
         int n_impa = 0;
 
-        for (const vertex *v : vertices) {
-            if (v->adj.size() % 2 != 0) {
+        for (const vertex *v : vertices)
+            if (v->adj.size() % 2 != 0)
                 n_impa += 1;
-            }
-        }
 
         return n_impa <= 2;
     }

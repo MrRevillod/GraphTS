@@ -25,9 +25,7 @@ void graph::bfs(vertex *start) {
         std::vector<vertex *> next;
 
         for (const vertex *v : frontier) {
-
             for (const auto edge : v->adj) {
-
                 if (!visited[edge.first]) {
                     vertex *to = edge.first;
                     next.push_back(to);
