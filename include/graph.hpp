@@ -14,7 +14,9 @@
 
 struct vertex {
     std::string name;
-    std::unordered_map<vertex *, int> adj;
+    std::unordered_map<vertex *, std::size_t> adj;
+
+    vertex() {}
 
     vertex(std::string n) : name(n) {}
 
@@ -28,6 +30,7 @@ struct graph {
     std::string name;
     std::vector<vertex *> vertices;
 
+    graph() {}
     graph(const std::string &n) : name(n) {}
 
     virtual ~graph() {
@@ -64,6 +67,7 @@ struct graph {
         }
 
         std::cout << n_edges << std::endl;
+
         std::cout << Color::green << "Peso total: " << Color::def << get_total_weight() << std::endl;
         std::cout << Color::green << "Tiene camino de euler: " << Color::def;
         std::cout << (has_euler_path() ? "Si" : "No") << std::endl;
@@ -79,15 +83,15 @@ struct graph {
         return n_impa <= 2;
     }
 
-    int get_total_weight() {
+    std::size_t get_total_weight() {
 
-        int total = 0;
+        std::size_t total = 0;
 
-        for (const vertex *v : vertices) {
+        for (const vertex *v : vertices)
             for (const auto edge : v->adj) {
+                std::cout << edge.second << " " << total << "\n";
                 total += edge.second;
             }
-        }
 
         return total;
     }

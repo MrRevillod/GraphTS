@@ -45,8 +45,7 @@ void run_graph(T *graph, Json::Value &algorithms) {
     std_function_map alg_map = {
         {"bfs", [&](vertex *v) { graph->bfs(v); }},
         {"dfs", [&](vertex *v) { graph->dfs(v); }},
-        {"dijkstra", [&](vertex *v) { graph->dijkstra(v); }},
-        {"kruskal", [&](vertex *v) { graph->kruskal(); }}};
+        {"dijkstra", [&](vertex *v) { graph->dijkstra(v); }}};
 
     graph->show();
 

@@ -1,7 +1,7 @@
-
 #include <algorithm>
 #include <errors.hpp>
 #include <iostream>
+#include <queue>
 #include <stdexcept>
 #include <string>
 #include <und_graph.hpp>
@@ -10,10 +10,12 @@ struct edge {
     vertex *v1, *v2;
     std::size_t weight;
 
+    edge() {}
+
     edge(vertex *_v1, vertex *_v2, std::size_t _w)
         : v1{_v1}, v2{_v2}, weight{_w} {}
 
-    bool operator<(edge &e) {
+    bool operator<(const edge &e) {
         return weight < e.weight;
     }
 
@@ -26,19 +28,15 @@ struct edge {
 
 void undirected_graph::add_edge(vertex *from, vertex *to, int weight) {
 
-    if (from == to) {
+    if (from == to)
         throw std::runtime_error(ERROR_SELF_CONNECTION);
-    }
 
-    if (!v_exist(from) || !v_exist(to)) {
+    if (!v_exist(from) || !v_exist(to))
         throw std::runtime_error(ERROR_VERTEX_NOT_FOUND);
-    }
 
-    for (const auto edge : from->adj) {
-        if (edge.first == to) {
+    for (const auto edge : from->adj)
+        if (edge.first == to)
             throw std::runtime_error(ERROR_EDGE_ALREADY_EXISTS);
-        }
-    }
 
     from->adj[to] = weight;
     to->adj[from] = weight;
@@ -56,25 +54,48 @@ void undirected_graph::rm_edge(vertex *from, vertex *to) {
     to->adj.erase(from);
 }
 
-undirected_graph *undirected_graph::kruskal() {
-    std::cout << "hola como estai desde el algoritmo kruskal\n";
+undirected_graph *undirected_graph::kruskal() const {
+    std::unordered_map<vertex *, std::size_t> pertenece;
 
-    std::vector<edge> edges;
+    for (std::size_t i = 0; i < vertices.size(); i++) {
+        pertenece[vertices[i]] = i;
+    }
 
-    for (vertex *v : vertices) {
-        for (auto e : v->adj) {
-            edge new_edge = edge(v, e.first, e.second);
-            auto finded = std::find(edges.begin(), edges.end(), new_edge);
-            if (finded != edges.end())
-                continue;
-            edges.emplace_back(new_edge);
+    edge aux_edge;
+    vertex *node1;
+    vertex *node2;
+
+    std::size_t cn = vertices.size();
+    std::size_t n = 0;
+    undirected_graph *mst = new undirected_graph();
+    while (n < (cn - 1)) {
+        aux_edge.weight = oo;
+        for (vertex *v : vertices) {
+            for (auto e : v->adj) {
+                if (aux_edge.weight > e.second && pertenece[v] != pertenece[e.first]) {
+                    aux_edge.v1 = v;
+                    aux_edge.v2 = e.first;
+                    aux_edge.weight = e.second;
+                }
+            }
+        }
+
+        if (pertenece[aux_edge.v1] != pertenece[aux_edge.v2]) {
+            node1 = new vertex(aux_edge.v1->name);
+            node2 = new vertex(aux_edge.v2->name);
+            mst->add_vertex(node1);
+            mst->add_vertex(node2);
+            mst->add_edge(node1, node2, aux_edge.weight);
+
+            std::size_t temp = pertenece[aux_edge.v2];
+            pertenece[aux_edge.v2] = pertenece[aux_edge.v1];
+            for (auto [k, v] : pertenece)
+                if (pertenece[k] == temp)
+                    pertenece[k] = pertenece[aux_edge.v1];
+
+            n++;
         }
     }
 
-    std::sort(edges.begin(), edges.end());
-
-    for (edge e : edges)
-        std::cout << e.weight << "\n";
-
-    return nullptr;
+    return mst;
 }
