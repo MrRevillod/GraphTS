@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <string>
 #include <und_graph.hpp>
+#include <unordered_set>
 
 void undirected_graph::add_edge(vertex *from, vertex *to, int weight) {
 

@@ -116,12 +116,5 @@ void load_data(const std::string file_name) {
 
         auto graph = create_graph<directed_graph>(g);
         run_graph(graph, g);
-
-        std::string input;
-        std::cout << Color::green << "\nPresiona Enter para ver el siguiente grafo o \ncualquier otra tecla para salir: " << Color::def;
-        std::getline(std::cin, input);
-        if (!input.empty()) {
-            break;
-        }
     }
 }

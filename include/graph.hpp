@@ -54,53 +54,6 @@ struct graph {
         return finded;
     }
 
-    void show() {
-
-        std::cout << " " << std::endl;
-        std::cout << Color::blue << name << Color::def << std::endl;
-
-        std::cout << " " << std::endl;
-        std::cout << Color::green << "Vertices: " << Color::def << vertices.size() << std::endl;
-        std::cout << Color::green << "Aristas: " << Color::def;
-
-        int n_edges = 0;
-
-        for (const vertex *v : vertices) {
-            n_edges += v->adj.size();
-        }
-
-        std::cout << n_edges << std::endl;
-        std::cout << Color::green << "Peso total: " << Color::def << get_total_weight() << std::endl;
-        std::cout << Color::green << "Tiene camino de euler: " << Color::def;
-        std::cout << (has_euler_path() ? "Si" : "No") << std::endl;
-    }
-
-    bool has_euler_path() {
-
-        int n_impa = 0;
-
-        for (const vertex *v : vertices) {
-            if (v->adj.size() % 2 != 0) {
-                n_impa += 1;
-            }
-        }
-
-        return n_impa <= 2;
-    }
-
-    int get_total_weight() {
-
-        int total = 0;
-
-        for (const vertex *v : vertices) {
-            for (const auto edge : v->adj) {
-                total += edge.second;
-            }
-        }
-
-        return total;
-    }
-
     bool v_exist(vertex *v) {
         return std::find(vertices.begin(), vertices.end(), v) != vertices.end();
     }
@@ -126,6 +79,9 @@ struct graph {
 
         vertices.erase(std::remove(vertices.begin(), vertices.end(), v), vertices.end());
     }
+
+    virtual void show() = 0;
+    virtual int get_total_weight() = 0;
 
     void bfs(vertex *start);
 

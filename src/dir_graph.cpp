@@ -64,10 +64,8 @@ void directed_graph::topological_sort() {
         }
     }
 
-    std::cout << " " << std::endl;
-    std::cout << Color::green << "Algoritmo: " << Color::def << "Ordenamiento topológico" << std::endl;
-    std::cout << " " << std::endl;
-    std::cout << "Ordenamiento: " << Color::red << "[ " << Color::def;
+    std::cout << Color::green << "Ordenamiento topológico: " << Color::def;
+    std::cout << Color::red << "[ " << Color::def;
 
     while (!topological_stack.empty()) {
         std::cout << topological_stack.top()->name << " ";
@@ -75,7 +73,6 @@ void directed_graph::topological_sort() {
     }
 
     std::cout << Color::red << "]" << Color::def << std::endl;
-    std::cout << std::endl;
 }
 
 void directed_graph::topological_sort_recursive(vertex *v, std::unordered_map<vertex *, bool> &visited, std::stack<vertex *> &topological_stack) {
