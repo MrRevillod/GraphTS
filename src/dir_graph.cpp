@@ -90,7 +90,6 @@ void directed_graph::topological_sort() {
     }
 
     std::cout << Color::red << "]" << Color::def << std::endl;
-    std::cout << std::endl;
 }
 
 void directed_graph::topological_sort_recursive(vertex *v, std::unordered_map<vertex *, bool> &visited, std::stack<vertex *> &topological_stack) {

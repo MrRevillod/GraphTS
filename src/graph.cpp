@@ -1,18 +1,13 @@
 
 #include <algorithm>
-#include <colormod.hpp>
 #include <graph.hpp>
 #include <iostream>
-#include <limits>
-#include <queue>
 #include <stdexcept>
 #include <string>
 
-void graph::bfs(vertex *start) {
+vertex *graph::get_vertex(const std::string name) {
 
-    std::vector<vertex *> frontier;
-    std::unordered_map<vertex *, bool> visited;
-    std::vector<std::pair<vertex *, int>> paths;
+    vertex *finded = nullptr;
 
     frontier.push_back(start);
     visited[start] = true;
@@ -34,34 +29,13 @@ void graph::bfs(vertex *start) {
                 }
             }
         }
-
-        frontier = next;
-        i++;
     }
 
-    /* Mostrar recorrido y niveles del grafo */
-
-    std::cout << " " << std::endl;
-    std::cout << Color::green << "Algoritmo: " << Color::def << "BFS" << std::endl;
-    std::cout << " " << std::endl;
-
-    std::cout << "Vertice de partida: " << start->name << std::endl;
-    std::cout << " " << std::endl;
-
-    std::cout << "Recorrido en anchura: " << Color::red << " [ " << Color::def;
-
-    for (const auto &path : paths) {
-        std::cout << path.first->name << " ";
+    if (finded == nullptr) {
+        throw std::runtime_error("\n\nEl vertice " + name + " no existe en el grafo\n");
     }
 
-    std::cout << Color::red << "]" << Color::def << std::endl;
-    std::cout << "Niveles del recorrido: " << Color::red << "[ " << Color::def;
-
-    for (const auto &path : paths) {
-        std::cout << path.second << " ";
-    }
-
-    std::cout << Color::red << "]" << Color::def << std::endl;
+    return finded;
 }
 
 void graph::dfs(vertex *start) {
@@ -91,56 +65,22 @@ void graph::dfs(vertex *start) {
     std::cout << Color::red << "]" << Color::def << std::endl;
 }
 
-void graph::dfs_recursive(vertex *s, std::unordered_map<vertex *, bool> &visited, std::unordered_map<vertex *, vertex *> &parents) {
+void graph::add_vertex(vertex *v) {
 
-    visited[s] = true;
-
-    for (const auto edge : s->adj) {
-        if (!visited[edge.first]) {
-            parents[edge.first] = s;
-            dfs_recursive(edge.first, visited, parents);
-        }
+    if (v_exist(v)) {
+        throw std::runtime_error("\n\n El vertice " + v->name + " ya existe en el grafo\n");
     }
+
+    vertices.push_back(v);
 }
 
-void graph::dijkstra(vertex *start) {
-
-    std::unordered_map<vertex *, int> distances;
-    std::unordered_map<vertex *, std::vector<vertex *>> paths;
-
+void graph::rm_vertex(vertex *v) {
     for (auto [name, v] : vertices) {
         distances[v] = oo;
     }
 
-    distances[start] = 0;
-    paths[start] = {start};
-
-    std::priority_queue<std::pair<vertex *, int>> pq;
-    pq.push({start, 0});
-
-    while (!pq.empty()) {
-
-        vertex *u = pq.top().first;
-        pq.pop();
-
-        for (const auto edge : u->adj) {
-
-            vertex *v = edge.first;
-            int weight = edge.second;
-
-            if (weight < 0) {
-                throw std::runtime_error("\n\n El argoritmo de dijkstra no trabaja con pesos negativos\n");
-            }
-
-            int distance = distances[u] + weight;
-
-            if (distance < distances[v]) {
-                distances[v] = distance;
-                paths[v] = paths[u];
-                paths[v].push_back(v);
-                pq.push({v, -distance});
-            }
-        }
+    if (v->adj.size() > 0) {
+        throw std::runtime_error("\n\nEl vertice " + v->name + " tiene aristas\n");
     }
 
     /* Mostrar recorrido y caminos mínimos */

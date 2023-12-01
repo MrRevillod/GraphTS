@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <string>
 #include <und_graph.hpp>
+#include <unordered_set>
 
 struct edge {
     vertex *v1, *v2;
