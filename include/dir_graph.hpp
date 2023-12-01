@@ -10,13 +10,15 @@ struct directed_graph : graph {
 
     ~directed_graph() {}
 
-    void add_edge(const std::string &from, const std::string &to, std::size_t weight) override;
-    void rm_edge(const std::string &from, const std::string &to) override;
+    void add_edge(const std::string &from, const std::string &to, std::size_t weight);
+    void rm_edge(const std::string &from, const std::string &to);
 
-    void show() override;
-    std::size_t get_total_weight() override;
+    void show();
+    std::size_t get_total_weight();
 
     void topological_sort();
+
+private:
     void topological_sort_recursive(vertex *s, std::unordered_map<vertex *, bool> &visited, std::stack<vertex *> &topological_stack);
 };
 

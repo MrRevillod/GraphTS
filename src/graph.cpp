@@ -18,7 +18,7 @@ void graph::bfs(vertex *start) {
     visited[start] = true;
     paths.push_back({start, 0});
 
-    int i = 1;
+    std::size_t i = 1;
 
     while (!frontier.empty()) {
 

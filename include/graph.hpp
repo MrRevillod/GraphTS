@@ -32,9 +32,9 @@ struct graph {
     graph() {}
     graph(const std::string &n) : name(n) {}
 
-    virtual ~graph() {
+    ~graph() {
         for (auto [name, v] : vertices)
-            delete (v);
+            delete v;
     }
 
     vertex *get_vertex(const std::string &name) {
@@ -45,7 +45,7 @@ struct graph {
         return vertices[name];
     }
 
-    virtual void show();
+    virtual void show() = 0;
 
     bool has_euler_path() {
         int n_impa = 0;
@@ -57,10 +57,10 @@ struct graph {
         return n_impa <= 2;
     }
 
-    virtual std::size_t get_total_weight();
+    virtual std::size_t get_total_weight() = 0;
 
     bool v_exist(const std::string &v_name) {
-        return vertices.find(name) != vertices.end();
+        return vertices.find(v_name) != vertices.end();
     }
 
     void add_vertex(const std::string &v_name) {
@@ -77,21 +77,29 @@ struct graph {
             throw std::runtime_error("\n\nEl vertice " + v_name + " no existe en el grafo\n");
         }
 
-        if (vertices[v_name]->adj.size() > 0)
+        if (vertices[v_name]->adj.size() > 0) {
             vertices[v_name]->adj.clear();
+            for (auto &[name, v] : vertices) {
+                if (v->adj.find(vertices[v_name]) == v->adj.end())
+                    continue;
+                rm_edge(name, v_name);
+            }
+        }
 
         vertices.erase(v_name);
     }
 
-    void bfs(vertex *start);
+    static void bfs(vertex *start);
 
     void dfs(vertex *s);
-    void dfs_recursive(vertex *s, std::unordered_map<vertex *, bool> &visited, std::unordered_map<vertex *, vertex *> &paths);
 
     void dijkstra(vertex *start);
 
-    virtual void add_edge(const std::string &from, const std::string &to, std::size_t weight);
-    virtual void rm_edge(const std::string &from, const std::string &to);
+    virtual void add_edge(const std::string &from, const std::string &to, std::size_t weight) = 0;
+    virtual void rm_edge(const std::string &from, const std::string &to) = 0;
+
+private:
+    void dfs_recursive(vertex *s, std::unordered_map<vertex *, bool> &visited, std::unordered_map<vertex *, vertex *> &paths);
 };
 
 #endif

@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <colormod.hpp>
 #include <errors.hpp>
 #include <iostream>
 #include <queue>
@@ -137,6 +138,12 @@ undirected_graph *undirected_graph::kruskal() const {
             n++;
         }
     }
+
+    std::cout << " " << std::endl;
+    std::cout << Color::green << "Algoritmo: " << Color::def << "Kruskal" << std::endl;
+    std::cout << " " << std::endl;
+
+    mst->show();
 
     return mst;
 }

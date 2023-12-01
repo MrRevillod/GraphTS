@@ -4,12 +4,12 @@
         "directed": false,
         "vertices": ["A", "B", "C", "D"],
         "edges": [
-            "A:B:1",
-            "B:C:2",
-            "C:D:3",
-            "D:A:4",
-            "A:C:5",
-            "B:D:6"
+            "A:B:10",
+            "A:C:3",
+            "A:D:33",
+            "B:C:29",
+            "B:D:2",
+            "C:D:5"
         ],
         "algorithms": [
             "kruskal:A"

@@ -10,11 +10,11 @@ struct undirected_graph : graph {
 
     ~undirected_graph() {}
 
-    void show() override;
-    std::size_t get_total_weight() override;
+    void show();
+    std::size_t get_total_weight();
 
-    void add_edge(const std::string &from, const std::string &to, std::size_t weight) override;
-    void rm_edge(const std::string &from, const std::string &to) override;
+    void add_edge(const std::string &from, const std::string &to, std::size_t weight);
+    void rm_edge(const std::string &from, const std::string &to);
     undirected_graph *kruskal() const;
 };
 
