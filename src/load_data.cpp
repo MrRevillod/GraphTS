@@ -11,17 +11,12 @@
 
 typedef std::map<std::string, std::function<void(vertex *)>> std_function_map;
 
-template <class T>
-void create_vertices(T *graph, Json::Value &vertices) {
-
-    for (auto v : vertices) {
-        graph->add_vertex(new vertex(v.asString()));
-    }
+void create_vertices(graph *graph, Json::Value &vertices) {
+    for (auto v : vertices)
+        graph->add_vertex(v.asString());
 }
 
-template <class T>
-void create_edges(T *graph, Json::Value &edges) {
-
+void create_edges(graph *graph, Json::Value &edges) {
     for (auto e : edges) {
         std::string edge = e.asString();
         std::stringstream ss_edge(edge);
@@ -31,11 +26,9 @@ void create_edges(T *graph, Json::Value &edges) {
         std::getline(ss_edge, to, ':');
         std::getline(ss_edge, weight_str, ':');
 
-        vertex *v_from = graph->get_vertex(from);
-        vertex *v_to = graph->get_vertex(to);
         int weight = std::stoi(weight_str);
 
-        graph->add_edge(v_from, v_to, weight);
+        graph->add_edge(from, to, weight);
     }
 }
 
@@ -74,12 +67,12 @@ template <class T>
 T *create_graph(Json::Value &data) {
 
     std::string g_name = data["name"].asString();
-    T *graph = new T(g_name);
+    T *g = new T(g_name);
 
-    create_vertices(graph, data["vertices"]);
-    create_edges(graph, data["edges"]);
+    create_vertices(g, data["vertices"]);
+    create_edges(g, data["edges"]);
 
-    return graph;
+    return g;
 }
 
 void load_data(const std::string file_name) {
@@ -98,12 +91,11 @@ void load_data(const std::string file_name) {
     }
 
     for (auto g : root) {
-
         bool directed = g["directed"].asBool();
 
         if (!directed) {
-            auto graph = create_graph<undirected_graph>(g);
-            run_graph(graph, g["algorithms"]);
+            undirected_graph *graph = create_graph<undirected_graph>(g);
+            run_graph<undirected_graph>(graph, g["algorithms"]);
             std::string input;
             std::cout << Color::green << "\nPresiona Enter para ver el siguiente grafo o \ncualquier otra tecla para salir: " << Color::def;
             std::getline(std::cin, input);
@@ -113,8 +105,8 @@ void load_data(const std::string file_name) {
             continue;
         }
 
-        auto graph = create_graph<directed_graph>(g);
-        run_graph(graph, g["algorithms"]);
+        directed_graph *graph = create_graph<directed_graph>(g);
+        run_graph<directed_graph>(graph, g["algorithms"]);
 
         std::string input;
         std::cout << Color::green << "\nPresiona Enter para ver el siguiente grafo o \ncualquier otra tecla para salir: " << Color::def;

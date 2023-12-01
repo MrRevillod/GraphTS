@@ -73,7 +73,7 @@ void graph::dfs(vertex *start) {
     std::cout << Color::green << "Algoritmo: " << Color::def << "DFS" << std::endl;
     std::cout << " " << std::endl;
 
-    for (vertex *v : vertices) {
+    for (auto [name, v] : vertices) {
         visited[v] = false;
     }
 
@@ -108,7 +108,7 @@ void graph::dijkstra(vertex *start) {
     std::unordered_map<vertex *, int> distances;
     std::unordered_map<vertex *, std::vector<vertex *>> paths;
 
-    for (vertex *v : vertices) {
+    for (auto [name, v] : vertices) {
         distances[v] = oo;
     }
 
@@ -154,7 +154,7 @@ void graph::dijkstra(vertex *start) {
 
     std::cout << "Distancias mínimas desde el vertice " << start->name << " a:";
 
-    for (vertex *v : vertices) {
+    for (auto [name, v] : vertices) {
         std::cout << "" << std::endl;
 
         if (distances[v] != oo && v != start) {

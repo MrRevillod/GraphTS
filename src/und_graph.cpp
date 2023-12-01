@@ -26,23 +26,39 @@ struct edge {
     }
 };
 
-void undirected_graph::add_edge(vertex *from, vertex *to, int weight) {
+void undirected_graph::show() {
+    std::cout << " " << std::endl;
+    std::cout << Color::blue << name << Color::def << std::endl;
 
-    if (from == to)
-        throw std::runtime_error(ERROR_SELF_CONNECTION);
+    std::cout << " " << std::endl;
+    std::cout << Color::green << "Tipo: " << Color::def << "No dirigido" << std::endl;
+    std::cout << Color::green << "Vertices:   " << Color::def << vertices.size() << std::endl;
+    std::cout << Color::green << "Aristas:    " << Color::def;
 
-    if (!v_exist(from) || !v_exist(to))
-        throw std::runtime_error(ERROR_VERTEX_NOT_FOUND);
+    int n_edges = 0;
 
-    for (const auto edge : from->adj)
-        if (edge.first == to)
-            throw std::runtime_error(ERROR_EDGE_ALREADY_EXISTS);
+    for (auto [name, v] : vertices)
+        n_edges += v->adj.size();
 
-    from->adj[to] = weight;
-    to->adj[from] = weight;
+    std::cout << n_edges / 2 << std::endl;
+    std::cout << Color::green << "Peso total: " << Color::def << get_total_weight() << std::endl;
+    std::cout << Color::green << "Tiene camino de euler: " << Color::def << (has_euler_path() ? "Si" : "No") << std::endl;
 }
 
-void undirected_graph::rm_edge(vertex *from, vertex *to) {
+std::size_t undirected_graph::get_total_weight() {
+
+    int total_weight = 0;
+
+    for (auto [name, v] : vertices) {
+        for (const auto edge : v->adj) {
+            total_weight += edge.second;
+        }
+    }
+
+    return total_weight / 2;
+}
+
+void undirected_graph::add_edge(const std::string &from, const std::string &to, std::size_t weight) {
 
     if (from == to)
         throw std::runtime_error(ERROR_SELF_CONNECTION);
@@ -50,62 +66,67 @@ void undirected_graph::rm_edge(vertex *from, vertex *to) {
     if (!v_exist(from) || !v_exist(to))
         throw std::runtime_error(ERROR_VERTEX_NOT_FOUND);
 
-    from->adj.erase(to);
-    to->adj.erase(from);
+    auto finded = vertices[from]->adj.find(vertices[to]);
+    if (finded != vertices[from]->adj.end())
+        throw std::runtime_error(ERROR_EDGE_ALREADY_EXISTS);
+
+    vertices[from]->adj.insert(std::pair<vertex *, std::size_t>(vertices[to], weight));
+    vertices[to]->adj.insert(std::pair<vertex *, std::size_t>(vertices[from], weight));
+}
+
+void undirected_graph::rm_edge(const std::string &from, const std::string &to) {
+
+    if (from == to)
+        throw std::runtime_error(ERROR_SELF_CONNECTION);
+
+    if (!v_exist(from) || !v_exist(to))
+        throw std::runtime_error(ERROR_VERTEX_NOT_FOUND);
+
+    auto finded = vertices[from]->adj.find(vertices[to]);
+    if (finded == vertices[from]->adj.end())
+        throw std::runtime_error(ERROR_EDGE_NOT_FOUND);
+
+    vertices[from]->adj.erase(vertices[to]);
+    vertices[to]->adj.erase(vertices[from]);
 }
 
 undirected_graph *undirected_graph::kruskal() const {
     std::unordered_map<vertex *, std::size_t> pertenece;
 
-    for (std::size_t i = 0; i < vertices.size(); i++) {
-        pertenece[vertices[i]] = i;
+    std::size_t i = 0;
+    for (auto [name, v] : vertices) {
+        pertenece[v] = i;
+        i++;
     }
 
     edge aux_edge;
-    vertex *node1;
-    vertex *node2;
 
     std::size_t cn = vertices.size();
     std::size_t n = 0;
-    undirected_graph *mst = new undirected_graph("Arbol de expanción mínima");
+    undirected_graph *mst = new undirected_graph("Árbol de expanción mínima");
     while (n < (cn - 1)) {
         aux_edge.weight = oo;
-        for (vertex *v : vertices) {
-            for (auto e : v->adj) {
-                if (aux_edge.weight > e.second && pertenece[v] != pertenece[e.first]) {
+        for (auto [name, v] : vertices) {
+            for (auto [con, weight] : v->adj) {
+                if (aux_edge.weight > weight && pertenece[v] != pertenece[con]) {
                     aux_edge.v1 = v;
-                    aux_edge.v2 = e.first;
-                    aux_edge.weight = e.second;
+                    aux_edge.v2 = con;
+                    aux_edge.weight = weight;
                 }
             }
         }
 
         if (pertenece[aux_edge.v1] != pertenece[aux_edge.v2]) {
-            node1 = new vertex(aux_edge.v1->name);
-            node2 = new vertex(aux_edge.v2->name);
+            bool find_node1 = mst->vertices.find(aux_edge.v1->name) != mst->vertices.end();
+            bool find_node2 = mst->vertices.find(aux_edge.v2->name) != mst->vertices.end();
 
-            bool find_node1 = false;
-            bool find_node2 = false;
-            for (vertex *v : mst->vertices) {
-                // find_node1 = v->name == node1->name ? true : false;
-                // find_node2 = v->name == node2->name ? true : false;
-                if (v->name == node1->name)
-                    find_node1 = true;
-                if (v->name == node2->name)
-                    find_node2 = true;
-            }
+            if (!find_node1)
+                mst->add_vertex(aux_edge.v1->name);
 
-            if (find_node1)
-                node1 = mst->get_vertex(aux_edge.v1->name);
-            else
-                mst->add_vertex(node1);
+            if (!find_node2)
+                mst->add_vertex(aux_edge.v2->name);
 
-            if (find_node2)
-                node2 = mst->get_vertex(aux_edge.v2->name);
-            else
-                mst->add_vertex(node2);
-
-            mst->add_edge(node1, node2, aux_edge.weight);
+            mst->add_edge(aux_edge.v1->name, aux_edge.v2->name, aux_edge.weight);
 
             std::size_t temp = pertenece[aux_edge.v2];
             pertenece[aux_edge.v2] = pertenece[aux_edge.v1];

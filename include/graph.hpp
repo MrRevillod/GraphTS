@@ -26,98 +26,61 @@ struct vertex {
 };
 
 struct graph {
-
     std::string name;
-    std::vector<vertex *> vertices;
+    std::unordered_map<std::string, vertex *> vertices;
 
     graph() {}
     graph(const std::string &n) : name(n) {}
 
     virtual ~graph() {
-        for (vertex *v : vertices)
+        for (auto [name, v] : vertices)
             delete (v);
     }
 
-    vertex *get_vertex(const std::string name) {
+    vertex *get_vertex(const std::string &name) {
 
-        vertex *finded = nullptr;
+        if (!v_exist(name))
+            throw std::runtime_error("\n\n El vertice " + name + " no existe en el grafo\n");
 
-        for (auto v : vertices)
-            if (v->name == name)
-                finded = v;
-
-        if (finded == nullptr)
-            throw std::runtime_error("\n\nEl vertice " + name + " no existe en el grafo\n");
-
-        return finded;
+        return vertices[name];
     }
 
-    void show() {
-        std::cout << " " << std::endl;
-        std::cout << Color::blue << name << Color::def << std::endl;
-
-        std::cout << " " << std::endl;
-        std::cout << Color::green << "Vertices: " << Color::def << vertices.size() << std::endl;
-        std::cout << Color::green << "Aristas: " << Color::def;
-
-        int n_edges = 0;
-
-        for (const vertex *v : vertices) {
-            n_edges += v->adj.size();
-        }
-
-        std::cout << n_edges << std::endl;
-
-        std::cout << Color::green << "Peso total: " << Color::def << get_total_weight() << std::endl;
-        std::cout << Color::green << "Tiene camino de euler: " << Color::def;
-        std::cout << (has_euler_path() ? "Si" : "No") << std::endl;
-    }
+    virtual void show();
 
     bool has_euler_path() {
         int n_impa = 0;
 
-        for (const vertex *v : vertices)
+        for (auto [name, v] : vertices)
             if (v->adj.size() % 2 != 0)
                 n_impa += 1;
 
         return n_impa <= 2;
     }
 
-    std::size_t get_total_weight() {
+    virtual std::size_t get_total_weight();
 
-        std::size_t total = 0;
-
-        for (const vertex *v : vertices)
-            for (const auto edge : v->adj)
-                total += edge.second;
-
-        return total;
+    bool v_exist(const std::string &v_name) {
+        return vertices.find(name) != vertices.end();
     }
 
-    bool v_exist(vertex *v) {
-        return std::find(vertices.begin(), vertices.end(), v) != vertices.end();
+    void add_vertex(const std::string &v_name) {
+
+        if (v_exist(v_name))
+            throw std::runtime_error("\n\n El vertice " + v_name + " ya existe en el grafo\n");
+
+        vertices[v_name] = new vertex(v_name);
     }
 
-    void add_vertex(vertex *v) {
+    void rm_vertex(const std::string &v_name) {
 
-        if (v_exist(v)) {
-            throw std::runtime_error("\n\n El vertice " + v->name + " ya existe en el grafo\n");
+        if (!v_exist(v_name)) {
+            throw std::runtime_error("\n\nEl vertice " + v_name + " no existe en el grafo\n");
         }
 
-        vertices.push_back(v);
-    }
+        if (vertices[v_name]->adj.size() > 0)
+            vertices[v_name]->adj.clear();
 
-    void rm_vertex(vertex *v) {
-
-        if (!v_exist(v)) {
-            throw std::runtime_error("\n\nEl vertice " + v->name + " no existe en el grafo\n");
-        }
-
-        if (v->adj.size() > 0) {
-            throw std::runtime_error("\n\nEl vertice " + v->name + " tiene aristas\n");
-        }
-
-        vertices.erase(std::remove(vertices.begin(), vertices.end(), v), vertices.end());
+        vertices.erase(v_name);
     }
 
     void bfs(vertex *start);
@@ -127,8 +90,8 @@ struct graph {
 
     void dijkstra(vertex *start);
 
-    virtual void add_edge(vertex *from, vertex *to, int weight) = 0;
-    virtual void rm_edge(vertex *from, vertex *to) = 0;
+    virtual void add_edge(const std::string &from, const std::string &to, std::size_t weight);
+    virtual void rm_edge(const std::string &from, const std::string &to);
 };
 
 #endif
