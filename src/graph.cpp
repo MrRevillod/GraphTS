@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <string>
 
-vertex *graph::get_vertex(const std::string name) {
+void graph::bfs(vertex *start) {
 
     vertex *finded = nullptr;
 
