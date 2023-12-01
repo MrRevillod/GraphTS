@@ -37,48 +37,14 @@ struct graph {
         }
     }
 
-    vertex *get_vertex(const std::string name) {
+    void add_vertex(vertex *v);
+    void rm_vertex(vertex *v);
 
-        vertex *finded = nullptr;
+    virtual void add_edge(vertex *from, vertex *to, int weight) = 0;
+    virtual void rm_edge(vertex *from, vertex *to) = 0;
 
-        for (auto v : vertices) {
-            if (v->name == name) {
-                finded = v;
-            }
-        }
-
-        if (finded == nullptr) {
-            throw std::runtime_error("\n\nEl vertice " + name + " no existe en el grafo\n");
-        }
-
-        return finded;
-    }
-
-    bool v_exist(vertex *v) {
-        return std::find(vertices.begin(), vertices.end(), v) != vertices.end();
-    }
-
-    void add_vertex(vertex *v) {
-
-        if (v_exist(v)) {
-            throw std::runtime_error("\n\n El vertice " + v->name + " ya existe en el grafo\n");
-        }
-
-        vertices.push_back(v);
-    }
-
-    void rm_vertex(vertex *v) {
-
-        if (!v_exist(v)) {
-            throw std::runtime_error("\n\nEl vertice " + v->name + " no existe en el grafo\n");
-        }
-
-        if (v->adj.size() > 0) {
-            throw std::runtime_error("\n\nEl vertice " + v->name + " tiene aristas\n");
-        }
-
-        vertices.erase(std::remove(vertices.begin(), vertices.end(), v), vertices.end());
-    }
+    bool v_exist(vertex *v);
+    vertex *get_vertex(const std::string name);
 
     virtual void show() = 0;
     virtual int get_total_weight() = 0;
@@ -89,9 +55,6 @@ struct graph {
     void dfs_recursive(vertex *s, std::unordered_map<vertex *, bool> &visited, std::unordered_map<vertex *, vertex *> &paths);
 
     void dijkstra(vertex *start);
-
-    virtual void add_edge(vertex *from, vertex *to, int weight) = 0;
-    virtual void rm_edge(vertex *from, vertex *to) = 0;
 };
 
 #endif

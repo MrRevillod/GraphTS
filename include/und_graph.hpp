@@ -57,7 +57,6 @@ struct undirected_graph : graph {
 
     void add_edge(vertex *from, vertex *to, int weight);
     void rm_edge(vertex *from, vertex *to);
-    void color_graph();
 };
 
 #endif
