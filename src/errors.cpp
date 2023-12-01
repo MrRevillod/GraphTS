@@ -1,5 +1,5 @@
 
-#include "errors.hpp"
+#include <errors.hpp>
 
 const char *ERROR_SELF_CONNECTION = "El vértice no puede estar conectado a sí mismo";
 const char *ERROR_VERTEX_NOT_FOUND = "Uno o ambos vértices no se encuentran en el grafo";

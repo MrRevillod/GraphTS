@@ -1,28 +1,11 @@
 
-#include "dir_graph.hpp"
-#include "errors.hpp"
 #include <algorithm>
+#include <dir_graph.hpp>
+#include <errors.hpp>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <string>
-
-void directed_graph::show() {
-
-    std::cout << "Visualización del grafo:\n\n";
-
-    for (const vertex *v : vertices) {
-        std::cout << "Vértice: " << v->name << "\n";
-        for (const auto edge : v->adj) {
-            vertex *to = edge.first;
-            int weight = edge.second;
-            std::cout << "  --> " << to->name << " (peso: " << weight << ")\n";
-        }
-        std::cout << "\n";
-    }
-
-    std::cout << "Fin de la visualización del grafo.\n";
-}
 
 void directed_graph::add_edge(vertex *from, vertex *to, int weight) {
 
@@ -64,4 +47,43 @@ void directed_graph::rm_edge(vertex *from, vertex *to) {
     }
 
     from->adj.erase(to);
+}
+
+void directed_graph::topological_sort() {
+
+    std::unordered_map<vertex *, bool> visited;
+    std::stack<vertex *> topological_stack;
+
+    for (vertex *v : vertices) {
+        visited[v] = false;
+    }
+
+    for (vertex *v : vertices) {
+        if (!visited[v]) {
+            topological_sort_recursive(v, visited, topological_stack);
+        }
+    }
+
+    std::cout << Color::green << "Ordenamiento topológico: " << Color::def;
+    std::cout << Color::red << "[ " << Color::def;
+
+    while (!topological_stack.empty()) {
+        std::cout << topological_stack.top()->name << " ";
+        topological_stack.pop();
+    }
+
+    std::cout << Color::red << "]" << Color::def << std::endl;
+}
+
+void directed_graph::topological_sort_recursive(vertex *v, std::unordered_map<vertex *, bool> &visited, std::stack<vertex *> &topological_stack) {
+
+    visited[v] = true;
+
+    for (const auto edge : v->adj) {
+        if (!visited[edge.first]) {
+            topological_sort_recursive(edge.first, visited, topological_stack);
+        }
+    }
+
+    topological_stack.push(v);
 }

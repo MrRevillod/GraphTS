@@ -1,0 +1,34 @@
+[
+    {
+        "name": "Grafo I",
+        "directed": true,
+        "vertices": ["A", "B", "C", "D"],
+        "edges": [
+            "A:B:1",
+            "B:C:2",
+            "C:D:3",
+            "D:A:4",
+            "A:C:5",
+            "B:D:6"
+        ],
+        "algorithms": [
+            "dijkstra:A",
+            "bfs:A",
+            "dfs:A"
+        ]
+    },
+    {
+        "name": "Grafo II",
+        "directed": false,
+        "vertices": ["1", "2", "3", "4"],
+        "edges": [
+            "1:2:3",
+            "2:3:489",
+            "3:4:2",
+            "4:1:30"
+        ],
+        "algorithms": [
+            "dijkstra:1"
+        ]
+    }
+]
