@@ -67,7 +67,7 @@ undirected_graph *undirected_graph::kruskal() const {
 
     std::size_t cn = vertices.size();
     std::size_t n = 0;
-    undirected_graph *mst = new undirected_graph();
+    undirected_graph *mst = new undirected_graph("Arbol de expanción mínima");
     while (n < (cn - 1)) {
         aux_edge.weight = oo;
         for (vertex *v : vertices) {
@@ -83,8 +83,28 @@ undirected_graph *undirected_graph::kruskal() const {
         if (pertenece[aux_edge.v1] != pertenece[aux_edge.v2]) {
             node1 = new vertex(aux_edge.v1->name);
             node2 = new vertex(aux_edge.v2->name);
-            mst->add_vertex(node1);
-            mst->add_vertex(node2);
+
+            bool find_node1 = false;
+            bool find_node2 = false;
+            for (vertex *v : mst->vertices) {
+                // find_node1 = v->name == node1->name ? true : false;
+                // find_node2 = v->name == node2->name ? true : false;
+                if (v->name == node1->name)
+                    find_node1 = true;
+                if (v->name == node2->name)
+                    find_node2 = true;
+            }
+
+            if (find_node1)
+                node1 = mst->get_vertex(aux_edge.v1->name);
+            else
+                mst->add_vertex(node1);
+
+            if (find_node2)
+                node2 = mst->get_vertex(aux_edge.v2->name);
+            else
+                mst->add_vertex(node2);
+
             mst->add_edge(node1, node2, aux_edge.weight);
 
             std::size_t temp = pertenece[aux_edge.v2];

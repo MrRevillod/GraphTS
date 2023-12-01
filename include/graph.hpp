@@ -88,10 +88,8 @@ struct graph {
         std::size_t total = 0;
 
         for (const vertex *v : vertices)
-            for (const auto edge : v->adj) {
-                std::cout << edge.second << " " << total << "\n";
+            for (const auto edge : v->adj)
                 total += edge.second;
-            }
 
         return total;
     }
