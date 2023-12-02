@@ -5,6 +5,7 @@
 #include <graph.hpp>
 
 struct undirected_graph : graph {
+
     undirected_graph() : graph() {}
     undirected_graph(const std::string &n) : graph(n) {}
 

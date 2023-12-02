@@ -14,6 +14,7 @@ struct load_data {
     load_data(const std::string &s_file);
 
 private:
+    
     std::vector<directed_graph *> directed;
     std::vector<undirected_graph *> undirected;
 

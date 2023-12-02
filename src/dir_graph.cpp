@@ -1,5 +1,6 @@
 
 #include <algorithm>
+#include <colormod.hpp>
 #include <dir_graph.hpp>
 #include <errors.hpp>
 #include <fstream>
@@ -8,6 +9,7 @@
 #include <string>
 
 void directed_graph::show() {
+
     std::cout << " " << std::endl;
     std::cout << Color::blue << name << Color::def << std::endl;
 
@@ -41,29 +43,35 @@ std::size_t directed_graph::get_total_weight() {
 
 void directed_graph::add_edge(const std::string &from, const std::string &to, std::size_t weight) {
 
-    if (from == to)
+    if (from == to) {
         throw std::runtime_error(ERROR_SELF_CONNECTION);
+    }
 
-    if (!v_exist(from) || !v_exist(to))
+    if (!v_exist(from) || !v_exist(to)) {
         throw std::runtime_error(ERROR_VERTEX_NOT_FOUND);
+    }
 
     auto finded = vertices[from]->adj.find(vertices[to]);
-    if (finded != vertices[from]->adj.end())
+    if (finded != vertices[from]->adj.end()) {
         throw std::runtime_error(ERROR_EDGE_ALREADY_EXISTS);
+    }
 
     vertices[from]->adj.insert(std::pair<vertex *, std::size_t>(vertices[to], weight));
 }
 
 void directed_graph::rm_edge(const std::string &from, const std::string &to) {
-    if (from == to)
+    if (from == to) {
         throw std::runtime_error(ERROR_SELF_CONNECTION);
+    }
 
-    if (!v_exist(from) || !v_exist(to))
+    if (!v_exist(from) || !v_exist(to)) {
         throw std::runtime_error(ERROR_VERTEX_NOT_FOUND);
+    }
 
     auto finded = vertices[from]->adj.find(vertices[to]);
-    if (finded == vertices[from]->adj.end())
+    if (finded == vertices[from]->adj.end()) {
         throw std::runtime_error(ERROR_EDGE_NOT_FOUND);
+    }
 
     vertices[from]->adj.erase(vertices[to]);
 }
@@ -73,12 +81,15 @@ void directed_graph::topological_sort() {
     std::unordered_map<vertex *, bool> visited;
     std::stack<vertex *> topological_stack;
 
-    for (auto [name, v] : vertices)
+    for (auto [name, v] : vertices) {
         visited[v] = false;
+    }
 
-    for (auto [name, v] : vertices)
-        if (!visited[v])
+    for (auto [name, v] : vertices) {
+        if (!visited[v]) {
             topological_sort_recursive(v, visited, topological_stack);
+        }
+    }
 
     std::cout << Color::green << "Algoritmo: " << Color::def << "Ordenamiento topológico" << std::endl;
     std::cout << " " << std::endl;
@@ -96,9 +107,11 @@ void directed_graph::topological_sort_recursive(vertex *v, std::unordered_map<ve
 
     visited[v] = true;
 
-    for (const auto edge : v->adj)
-        if (!visited[edge.first])
+    for (const auto edge : v->adj) {
+        if (!visited[edge.first]) {
             topological_sort_recursive(edge.first, visited, topological_stack);
+        }
+    }
 
     topological_stack.push(v);
 }

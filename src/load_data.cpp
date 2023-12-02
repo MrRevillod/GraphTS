@@ -12,6 +12,7 @@
 using std_function_map = std::map<std::string, std::function<void(vertex *)>>;
 
 load_data::load_data(const std::string &s_file) {
+
     file_handler.open(s_file);
     std::cout << Color::white << "Leyendo grafos desde: " << Color::def << Color::green << s_file << Color::def << std::endl;
     read_json();
@@ -21,16 +22,20 @@ load_data::load_data(const std::string &s_file) {
 
     for (directed_graph *g : directed) {
         for (auto json_graph : root) {
+
             if (!json_graph["directed"].asBool())
                 continue;
+
             run_dir_graph(g, json_graph["algorithms"]);
         }
     }
 
     for (undirected_graph *g : undirected) {
         for (auto json_graph : root) {
+
             if (json_graph["directed"].asBool())
                 continue;
+
             run_und_graph(g, json_graph["algorithms"]);
         }
     }
@@ -38,12 +43,14 @@ load_data::load_data(const std::string &s_file) {
 
 template <class T>
 void load_data::create_vertices(T *g, Json::Value &vertices) {
-    for (auto v : vertices)
+    for (auto v : vertices) {
         g->add_vertex(v.asString());
+    }
 }
 
 template <class T>
 void load_data::create_edges(T *g, Json::Value &edges) {
+
     for (auto e : edges) {
         std::string edge = e.asString();
         std::stringstream ss_edge(edge);
@@ -65,7 +72,9 @@ void load_data::run_und_graph(undirected_graph *g, Json::Value &algorithms) {
         {"bfs", [&](vertex *v) { g->bfs(v); }},
         {"dfs", [&](vertex *v) { g->dfs(v); }},
         {"dijkstra", [&](vertex *v) { g->dijkstra(v); }},
-        {"kruskal", [&](vertex *v) { g->kruskal(); }}};
+        {"kruskal", [&](vertex *v) { g->kruskal(); }}
+
+    };
 
     g->show();
 
@@ -96,7 +105,9 @@ void load_data::run_dir_graph(directed_graph *g, Json::Value &algorithms) {
         {"bfs", [&](vertex *v) { g->bfs(v); }},
         {"dfs", [&](vertex *v) { g->dfs(v); }},
         {"dijkstra", [&](vertex *v) { g->dijkstra(v); }},
-        {"topological-sort", [&](vertex *v) { g->topological_sort(); }}};
+        {"topological-sort", [&](vertex *v) { g->topological_sort(); }}
+
+    };
 
     g->show();
 
@@ -137,8 +148,9 @@ void load_data::read_json() {
     Json::CharReaderBuilder builder;
     JSONCPP_STRING errs;
 
-    if (!parseFromStream(builder, file_handler, &root, &errs))
+    if (!parseFromStream(builder, file_handler, &root, &errs)) {
         throw std::runtime_error(errs);
+    }
 }
 
 void load_data::load_dir_graph() {
@@ -147,6 +159,7 @@ void load_data::load_dir_graph() {
 
         if (!is_directed)
             continue;
+
         directed_graph *gra = create_graph<directed_graph>(g);
         directed.emplace_back(gra);
     }
@@ -158,6 +171,7 @@ void load_data::load_und_graph() {
 
         if (is_directed)
             continue;
+
         undirected_graph *gra = create_graph<undirected_graph>(g);
         undirected.emplace_back(gra);
     }

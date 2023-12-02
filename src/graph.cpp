@@ -1,110 +1,60 @@
 
-#include <algorithm>
 #include <graph.hpp>
 #include <iostream>
-#include <stdexcept>
 #include <string>
 
-void graph::bfs(vertex *start) {
+void graph::add_vertex(const std::string &v_name) {
 
-    vertex *finded = nullptr;
+    if (v_exist(v_name)) {
+        throw std::runtime_error("\n\n El vertice " + v_name + " ya existe en el grafo\n");
+    }
 
-    frontier.push_back(start);
-    visited[start] = true;
-    paths.push_back({start, 0});
+    vertices[v_name] = new vertex(v_name);
+}
 
-    std::size_t i = 1;
+void graph::rm_vertex(const std::string &v_name) {
 
-    while (!frontier.empty()) {
+    if (!v_exist(v_name)) {
+        throw std::runtime_error("\n\nEl vertice " + v_name + " no existe en el grafo\n");
+    }
 
-        std::vector<vertex *> next;
+    if (vertices[v_name]->adj.size() > 0) {
 
-        for (const vertex *v : frontier) {
-            for (const auto edge : v->adj) {
-                if (!visited[edge.first]) {
-                    vertex *to = edge.first;
-                    next.push_back(to);
-                    paths.push_back({to, i});
-                    visited[to] = true;
-                }
-            }
+        vertices[v_name]->adj.clear();
+        for (auto &[name, v] : vertices) {
+
+            if (v->adj.find(vertices[v_name]) == v->adj.end())
+                continue;
+
+            rm_edge(name, v_name);
         }
     }
 
-    if (finded == nullptr) {
-        throw std::runtime_error("\n\nEl vertice " + name + " no existe en el grafo\n");
-    }
-
-    return finded;
+    vertices.erase(v_name);
 }
 
-void graph::dfs(vertex *start) {
+vertex *graph::get_vertex(const std::string &name) {
 
-    std::unordered_map<vertex *, bool> visited;
-    std::unordered_map<vertex *, vertex *> path;
-
-    std::cout << " " << std::endl;
-    std::cout << Color::green << "Algoritmo: " << Color::def << "DFS" << std::endl;
-    std::cout << " " << std::endl;
-
-    for (auto [name, v] : vertices) {
-        visited[v] = false;
+    if (!v_exist(name)) {
+        throw std::runtime_error("\n\n El vertice " + name + " no existe en el grafo\n");
     }
 
-    dfs_recursive(start, visited, path);
-
-    std::cout << "Vertice de partida: " << start->name << std::endl;
-    std::cout << " " << std::endl;
-
-    std::cout << "Recorrido en profundidad: " << Color::red << "[ " << Color::def;
-
-    for (const auto path : path) {
-        std::cout << path.first->name << " ";
-    }
-
-    std::cout << Color::red << "]" << Color::def << std::endl;
+    return vertices[name];
 }
 
-void graph::add_vertex(vertex *v) {
+bool graph::has_euler_path() {
 
-    if (v_exist(v)) {
-        throw std::runtime_error("\n\n El vertice " + v->name + " ya existe en el grafo\n");
-    }
-
-    vertices.push_back(v);
-}
-
-void graph::rm_vertex(vertex *v) {
-    for (auto [name, v] : vertices) {
-        distances[v] = oo;
-    }
-
-    if (v->adj.size() > 0) {
-        throw std::runtime_error("\n\nEl vertice " + v->name + " tiene aristas\n");
-    }
-
-    /* Mostrar recorrido y caminos mínimos */
-
-    std::cout << " " << std::endl;
-    std::cout << Color::green << "Algoritmo: " << Color::def << "Dijkstra" << std::endl;
-    std::cout << " " << std::endl;
-
-    std::cout << "Vertice de partida: " << start->name << std::endl;
-    std::cout << " " << std::endl;
-
-    std::cout << "Distancias mínimas desde el vertice " << start->name << " a:";
+    int n_impa = 0;
 
     for (auto [name, v] : vertices) {
-        std::cout << "" << std::endl;
-
-        if (distances[v] != oo && v != start) {
-            std::cout << "Vertice " << v->name << " - Camino:" << Color::red << " [ " << Color::def;
-
-            for (vertex *p : paths[v]) {
-                std::cout << p->name << " ";
-            }
-
-            std::cout << Color::red << "]" << Color::def << " - Costo: " << (distances[v] == oo ? "∞" : std::to_string(distances[v])) << std::endl;
+        if (v->adj.size() % 2 != 0) {
+            n_impa += 1;
         }
     }
+
+    return n_impa <= 2;
+}
+
+bool graph::v_exist(const std::string &v_name) {
+    return vertices.find(v_name) != vertices.end();
 }
