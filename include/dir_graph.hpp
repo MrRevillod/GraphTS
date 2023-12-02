@@ -5,6 +5,7 @@
 #include <graph.hpp>
 
 struct directed_graph : graph {
+
     directed_graph() : graph() {}
     directed_graph(const std::string &n) : graph(n) {}
 
