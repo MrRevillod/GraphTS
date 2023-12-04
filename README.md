@@ -1,7 +1,7 @@
 
 # Grafo
 
-Un grafo es un conjunto de vertices y aritas que los conectan entre si.
+Un grafo es un conjunto de vertices y aristas que los conectan entre si.
 
 ## Algoritmos implementados
 
