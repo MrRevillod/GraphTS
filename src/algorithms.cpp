@@ -152,10 +152,10 @@ void graph::dijkstra(vertex *start) {
     std::cout << "Vertice de partida: " << start->name << std::endl;
     std::cout << " " << std::endl;
 
-    std::cout << "Distancias mínimas desde el vertice " << start->name << " a:";
+    std::cout << "Distancias mínimas desde el vertice " << start->name << " a: " << std::endl;
 
     for (auto [name, v] : vertices) {
-        std::cout << "" << std::endl;
+        std::cout << " " << std::endl;
 
         if (distances[v] != oo && v != start) {
             std::cout << "Vertice " << v->name << " - Camino:" << Color::red << " [ " << Color::def;

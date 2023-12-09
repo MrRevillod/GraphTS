@@ -74,6 +74,7 @@ void undirected_graph::add_edge(const std::string &from, const std::string &to, 
     }
 
     auto finded = vertices[from]->adj.find(vertices[to]);
+
     if (finded != vertices[from]->adj.end()) {
         throw std::runtime_error(ERROR_EDGE_ALREADY_EXISTS);
     }
@@ -93,6 +94,7 @@ void undirected_graph::rm_edge(const std::string &from, const std::string &to) {
     }
 
     auto finded = vertices[from]->adj.find(vertices[to]);
+
     if (finded == vertices[from]->adj.end()) {
         throw std::runtime_error(ERROR_EDGE_NOT_FOUND);
     }
@@ -165,5 +167,14 @@ undirected_graph *undirected_graph::kruskal() const {
     std::cout << " " << std::endl;
 
     mst->show();
+
+    std::cout << "Vertices: [ ";
+
+    for (auto [name, v] : vertices) {
+        std::cout << v->name << " ";
+    }
+
+    std::cout << "]" << std::endl;
+
     return mst;
 }

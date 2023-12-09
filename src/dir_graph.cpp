@@ -20,8 +20,9 @@ void directed_graph::show() {
 
     int n_edges = 0;
 
-    for (auto [name, v] : vertices)
+    for (auto [name, v] : vertices) {
         n_edges += v->adj.size();
+    }
 
     std::cout << n_edges << std::endl;
     std::cout << Color::green << "Peso total: " << Color::def << get_total_weight() << std::endl;
@@ -52,6 +53,7 @@ void directed_graph::add_edge(const std::string &from, const std::string &to, st
     }
 
     auto finded = vertices[from]->adj.find(vertices[to]);
+
     if (finded != vertices[from]->adj.end()) {
         throw std::runtime_error(ERROR_EDGE_ALREADY_EXISTS);
     }
@@ -60,6 +62,7 @@ void directed_graph::add_edge(const std::string &from, const std::string &to, st
 }
 
 void directed_graph::rm_edge(const std::string &from, const std::string &to) {
+
     if (from == to) {
         throw std::runtime_error(ERROR_SELF_CONNECTION);
     }
@@ -69,6 +72,7 @@ void directed_graph::rm_edge(const std::string &from, const std::string &to) {
     }
 
     auto finded = vertices[from]->adj.find(vertices[to]);
+
     if (finded == vertices[from]->adj.end()) {
         throw std::runtime_error(ERROR_EDGE_NOT_FOUND);
     }

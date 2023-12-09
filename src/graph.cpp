@@ -21,6 +21,7 @@ void graph::rm_vertex(const std::string &v_name) {
     if (vertices[v_name]->adj.size() > 0) {
 
         vertices[v_name]->adj.clear();
+
         for (auto &[name, v] : vertices) {
 
             if (v->adj.find(vertices[v_name]) == v->adj.end())

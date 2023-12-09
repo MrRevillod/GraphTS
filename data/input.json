@@ -2,7 +2,12 @@
     {
         "name": "Grafo I",
         "directed": false,
-        "vertices": ["A", "B", "C", "D"],
+        "vertices": [
+            "A",
+            "B",
+            "C",
+            "D"
+        ],
         "edges": [
             "A:B:10",
             "A:C:3",
@@ -12,7 +17,37 @@
             "C:D:5"
         ],
         "algorithms": [
-            "kruskal:A"
+            "kruskal:A",
+            "dijkstra:A"
+        ]
+    },
+    {
+        "name": "Grafo II",
+        "directed": true,
+        "vertices": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E"
+        ],
+        "edges": [
+            "A:B:10",
+            "A:C:3",
+            "A:D:9",
+            "A:E:1",
+            "B:C:7",
+            "B:D:2",
+            "B:E:5",
+            "C:D:5",
+            "C:E:1",
+            "D:E:7"
+        ],
+        "algorithms": [
+            "bfs:A",
+            "dfs:A",
+            "topological-sort:A",
+            "dijkstra:A"
         ]
     }
 ]
